@@ -4,6 +4,8 @@
     {
         static void Main(string[] args)
         {
+            Console.WriteLine(Persistence(39));
+
             var arr = new int[10][];
 
             for (int y = 0; y < arr.Length; y++)
@@ -39,6 +41,26 @@
                 }
             }
             return array;
+        }
+
+        public static int Persistence(long n)
+        {
+            var str = n.ToString();
+
+            int col = 0;
+            while(str.Length != 1)
+            {
+                long multiply = 1;
+                for (int c = 0; c < str.Length; c++)
+                {
+                    multiply *= str[c] - '0';
+                }
+
+                str = multiply.ToString();
+                col++;
+            }
+
+            return col;
         }
     }
 }
