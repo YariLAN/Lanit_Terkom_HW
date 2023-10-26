@@ -1,26 +1,19 @@
-﻿using System;
-using System.IO;
+﻿using System.Xml.Linq;
 
 namespace hw_2
 {
-    public class WorkWithFile
+    public class FileWorker
     {
         public string Path =>
             Directory.GetParent(Environment.ProcessPath).Parent.Parent.Parent.FullName + "\\" + Name;
 
         public int LengthFile => File.ReadAllLines(Path).Length;
 
-        public string Name { get; set; } = "dafault.txt";
+        public string Name { get; set; }
 
-        public WorkWithFile() { }
-
-        public WorkWithFile(string name)
+        public FileWorker(string name)
         {
-            if (name != "")
-            {
-                Name = name + ".txt";
-            }
-            CreateFile();
+            Name = name + ".txt";
         }
 
         public void CreateFile()
@@ -33,17 +26,16 @@ namespace hw_2
 
         public void ReadingFile(int count, int startIndex = 0)
         {
-            var endIndex = count + startIndex;
-
-            if (endIndex > LengthFile)
-            {
-                endIndex = LengthFile;
-            }
-
-            StreamReader? sr = null;
             try
             {
-                using (sr = File.OpenText(Path))
+                var endIndex = count + startIndex;
+
+                if (endIndex > LengthFile)
+                {
+                    endIndex = LengthFile;
+                }
+
+                using (StreamReader? sr = File.OpenText(Path))
                 {
                     for (int skip = 0; skip < startIndex; skip++)
                     {
@@ -56,14 +48,9 @@ namespace hw_2
                     }
                 }
             }
-            catch
+            catch (FileNotFoundException ex)
             {
-                Console.ForegroundColor = ConsoleColor.Red;
-                throw new FileNotFoundException();
-            }
-            finally
-            {
-                sr?.Dispose();
+                throw ex;
             }
         }
 
@@ -79,8 +66,6 @@ namespace hw_2
 
         public async Task RecordHtmlToFile(string url)
         {
-            StreamWriter? sw = null;
-
             try
             {
                 string? html = null;
@@ -91,21 +76,18 @@ namespace hw_2
 
                     html = await content.ReadAsStringAsync();
 
-                    sw = File.CreateText(Path);
+                    CreateFile();
+
+                    StreamWriter? sw = File.CreateText(Path);
 
                     sw.WriteLine(html);
-                }
-                Console.WriteLine("\nData is loaded!\n");
-            }
-            catch (Exception ex)
-            {
-                Console.ForegroundColor = ConsoleColor.Red;
 
-                Console.WriteLine(ex.Message);
+                    sw.Close();
+                }
             }
-            finally
+            catch (InvalidOperationException ex)
             {
-                sw?.Dispose();
+                throw ex;
             }
         }
     }
