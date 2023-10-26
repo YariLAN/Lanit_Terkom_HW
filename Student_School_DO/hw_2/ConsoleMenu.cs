@@ -28,7 +28,6 @@ namespace hw_2
 
             Console.WriteLine("-----------------------------\n");
             SetForeground(ForeColorDefault);
-
         }
 
         public void Message(ConsoleColor color, string text)
