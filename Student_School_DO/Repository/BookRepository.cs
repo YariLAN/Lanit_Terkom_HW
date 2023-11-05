@@ -33,21 +33,13 @@ namespace Provider
 
             var listBook = new List<Book>();
 
-            var str = db.GetQuery(
-                GET_ALL,
-                nameof(b.id_book),
-                nameof(b.nameBook),
-                nameof(b.author),
-                nameof(b.fk_id_genre),
-                nameof(b.collateralValue),
-                nameof(b.rentalCost),
-                nameof(b.countBook));
+            var str = db.GetQuery(GET_ALL, 7);
 
             var list = str.Split("\n", StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var line in list)
             {
-                listBook.Add(Book.Parse(line));
+                listBook.Add(new Book().Parse(line));
             }
 
             return listBook;
@@ -57,43 +49,35 @@ namespace Provider
         {
             var b = new Book();
 
-            var str = db.GetQuery(
-                string.Format(GET_BY_ID, id),
-                nameof(b.id_book),
-                nameof(b.nameBook),
-                nameof(b.author),
-                nameof(b.fk_id_genre),
-                nameof(b.collateralValue),
-                nameof(b.rentalCost),
-                nameof(b.countBook));
+            var str = db.GetQuery(string.Format(GET_BY_ID, id), 7);
 
-            return Book.Parse(str);
+            return b.Parse(str);
         }
 
         public void AddItem(Book entity)
         {
             db.AddQuery(
                 ADD,
-                entity.id_book.ToString(),
-                entity.nameBook,
-                entity.author,
-                entity.fk_id_genre.ToString(),
-                entity.collateralValue.ToString(),
-                entity.rentalCost.ToString(),
-                entity.countBook.ToString());
+                entity.BookId.ToString(),
+                entity.Name,
+                entity.Author,
+                entity.GenreId.ToString(),
+                entity.CollateralValue.ToString(),
+                entity.RentalCost.ToString(),
+                entity.CountBook.ToString());
         }
 
         public void UpdateItem(Book entity)
         {
             db.UpdateQuery(
                 UPDATE,
-                entity.id_book.ToString(),
-                entity.nameBook,
-                entity.author,
-                entity.fk_id_genre.ToString(),
-                entity.collateralValue.ToString(),
-                entity.rentalCost.ToString(),
-                entity.countBook.ToString());
+                entity.BookId.ToString(),
+                entity.Name,
+                entity.Author,
+                entity.GenreId.ToString(),
+                entity.CollateralValue.ToString(),
+                entity.RentalCost.ToString(),
+                entity.CountBook.ToString());
         }
 
         public void DeleteById(Guid id)

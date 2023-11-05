@@ -24,7 +24,7 @@ namespace Provider
 
         public void AddItem(Genre entity)
         {
-            db.AddQuery(ADD, entity.nameGenre);
+            db.AddQuery(ADD, entity.Name);
         }
 
         public void DeleteById(int id)
@@ -38,13 +38,13 @@ namespace Provider
 
             var listG = new List<Genre>();
 
-            var str = db.GetQuery(GET_ALL, nameof(gen.id_genre), nameof(gen.nameGenre));
+            var str = db.GetQuery(GET_ALL, 2);
 
             var list = str.Split("\n", StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var line in list)
             {
-                listG.Add(Genre.Parse(line));
+                listG.Add(gen.Parse(line));
             }
 
             return listG;
@@ -54,17 +54,14 @@ namespace Provider
         {
             var gen = new Genre();
 
-            var str = db.GetQuery(
-                string.Format(GET_BY_ID, id.ToString()),
-                nameof(gen.id_genre),
-                nameof(gen.nameGenre));
+            var str = db.GetQuery(string.Format(GET_BY_ID, id.ToString()), 2);
 
-            return Genre.Parse(str);
+            return gen.Parse(str);
         }
 
         public void UpdateItem(Genre g)
         {
-            db.UpdateQuery(UPDATE, g.id_genre.ToString(), g.nameGenre);
+            db.UpdateQuery(UPDATE, g.GenreId.ToString(), g.Name);
         }
     }
 }

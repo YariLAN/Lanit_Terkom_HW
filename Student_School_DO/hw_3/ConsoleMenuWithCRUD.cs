@@ -1,9 +1,10 @@
 ﻿using Provider;
 using Entities;
+using hw_2;
 
-namespace hw_2
+namespace hw_3
 {
-    internal class ConsoleMenuWithCRUD
+    public class ConsoleMenuWithCRUD: ConsoleMenu
     {
         public static ConsoleColor ForeColorMenu = ConsoleColor.Yellow;
         public static ConsoleColor ForeColorServices = ConsoleColor.Blue;
@@ -16,33 +17,7 @@ namespace hw_2
         private BookRepository _bookRep = new BookRepository();
         private IssuedRepository _issuedRep = new IssuedRepository();
 
-        public void Clear()
-        {
-            Console.Clear();
-        }
-
-        public void SetForeground(ConsoleColor color)
-        {
-            Console.ForegroundColor = color;
-        }
-
-        public void Show(ConsoleColor color, Action action)
-        {
-            SetForeground(color);
-            Console.WriteLine("\n-----------------------------");
-
-            action();
-
-            Console.WriteLine("-----------------------------\n");
-            SetForeground(ForeColorDefault);
-        }
-
-        public void Message(ConsoleColor color, string text)
-        {
-            Show(color, () => Console.WriteLine(text));
-        }
-
-        public async Task DisplayMainMenu()
+        public override async Task DisplayMainMenu()
         {
             try
             {
@@ -92,100 +67,6 @@ namespace hw_2
             }
         }
 
-        public void ReadingLines()
-        {
-            while (true)
-            {
-                Clear();
-
-                SetForeground(ForeColorServices);
-
-                var formAns = InputTextForm(
-                    "Input a fileName: ",
-                    "Input a count rows of file: ",
-                    "Which line to read from: "
-                );
-
-                var fileName = formAns[0];
-
-                int.TryParse(formAns[1], out var count);
-
-                int.TryParse(formAns[2], out var startIndex);
-
-                Show(ForeColorDefault, () =>
-                {
-                    var file = new FileWorker(fileName);
-                    try
-                    {
-                        file.ReadingFile(count, startIndex - 1);
-                    }
-                    catch (Exception ex)
-                    {
-                        Message(ForeColorErrors, ex.Message);
-                    }
-                });
-
-                var ans = RestartOrExit();
-                switch (ans)
-                {
-                    case 1:
-                        break;
-                    case 2:
-                        return;
-                }
-            }
-        }
-
-        public int RestartOrExit()
-        {
-            Show(ForeColorMenu, () =>
-            {
-                Console.WriteLine("1. Restart");
-                Console.WriteLine("2. Exit to menu");
-            });
-
-            while (true)
-            {
-                int.TryParse(Console.ReadLine(), out int ans);
-
-                switch (ans)
-                {
-                    case 1:
-                        return 1;
-                    case 2:
-                        return 2;
-                    default:
-                        Message(ForeColorErrors, "Error, repeat!");
-                        break;
-                }
-            }
-        }
-
-        public void Fib()
-        {
-            while (true)
-            {
-                Clear();
-
-                SetForeground(ForeColorServices);
-
-                var formAns = InputTextForm("Input a serial number of Fibonacci: ");
-
-                int.TryParse(formAns[0], out int n);
-
-                Message(ForeColorDefault, ($"The answer is {n.Fibonacci()}"));
-
-                var ans = RestartOrExit();
-                switch (ans)
-                {
-                    case 1:
-                        break;
-                    case 2:
-                        return;
-                }
-            }
-        }
-
         public void LibrarySystem()
         {
             while(true)
@@ -197,8 +78,8 @@ namespace hw_2
                     Console.WriteLine("1. Books");
                     Console.WriteLine("2. Readers");
                     Console.WriteLine("3. Issued");
-                    Console.WriteLine("4. Categories");
-                    Console.WriteLine("5. Genres");
+                    Console.WriteLine("4. Categories of readers");
+                    Console.WriteLine("5. Genres of books");
                     Console.WriteLine("6. Exit to menu");
                 });
 
@@ -264,11 +145,20 @@ namespace hw_2
                             break;
 
                         case "3":
-                            AddBookForm();
+                            var book = new Book();
+
+                            AddItemForm(_bookRep, book,
+                                nameof(book.Name),
+                                nameof(book.Author),
+                                nameof(book.GenreId),
+                                nameof(book.CollateralValue),
+                                nameof(book.RentalCost),
+                                nameof(book.CountBook)
+                            );
                             break;
 
                         case "4":
-                            UpdateBookFomr();
+                            UpdateBookForm();
                             break;
 
                         case "5":
@@ -300,39 +190,38 @@ namespace hw_2
             }
         }
 
-        public void AddBookForm()
+        public void AddItemForm<T, id>(
+            InterfaceRepository<T, id> repository,
+            EntityInterface<T> entity,
+            params string[] nameOf)
         {
-            var textForm = InputTextForm(
-                "Name: ",
-                "Author: ",
-                "Genre: ",
-                "Collateral Value: ",
-                "Rental Cost: ",
-                "Count of books: "
-            );
+            var textForm = InputTextForm(nameOf.Select(x => x + ": ").ToArray());
 
-            textForm.Insert(0, Guid.NewGuid().ToString());
+            if (typeof(id) == typeof(Guid))
+            {
+                textForm.Insert(0, Guid.NewGuid().ToString());
+            }
 
             var str = "";
 
             textForm.ForEach(x => str += x + " ");
 
-            _bookRep.AddItem(Book.Parse(str));
+            repository.AddItem(entity.Parse(str));
         }
 
-        public void UpdateBookFomr()
+        public void UpdateBookForm()
         {
             var id = Guid.Parse(InputTextForm("Enter the id: ")[0]);
 
             var book = _bookRep.GetById(id);
 
             var dataForm = InputTextForm(
-                $"Name {book.nameBook} for it ",
-                $"Author {book.author} for it ",
-                $"Genre {book.fk_id_genre} for it ",
-                $"Collateral Value {book.collateralValue} for it ",
-                $"Rental cost {book.rentalCost} for it ",
-                $"Count {book.countBook} for it ");
+                $"Name {book.Name} for it ",
+                $"Author {book.Author} for it ",
+                $"Genre {book.GenreId} for it ",
+                $"Collateral Value {book.CollateralValue} for it ",
+                $"Rental cost {book.RentalCost} for it ",
+                $"Count {book.CountBook} for it ");
 
             dataForm.Insert(0, id.ToString());
 
@@ -340,7 +229,7 @@ namespace hw_2
 
             dataForm.ForEach(x => str += x + " ");
 
-            _bookRep.UpdateItem(Book.Parse(str));
+            _bookRep.UpdateItem(new Book().Parse(str));
         }
 
         //
@@ -375,7 +264,16 @@ namespace hw_2
                             break;
 
                         case "3":
-                            AddReaderForm();
+                            var r = new Reader();
+
+                            AddItemForm(_readRep, r,
+                                nameof(r.LastName),
+                                nameof(r.FirstName),
+                                nameof(r.Patronymic),
+                                nameof(r.CategoryId),
+                                nameof(r.Adress),
+                                nameof(r.Email)
+                            );
                             break;
 
                         case "4":
@@ -418,12 +316,12 @@ namespace hw_2
             var reader = _readRep.GetById(id);
 
             var dataForm = InputTextForm(
-                $"Last name {reader.lastName} for it ",
-                $"First name {reader.firstName} for it ",
-                $"Patronymic {reader.patronymic} for it ",
-                $"Category {reader.fk_id_category} for it ",
-                $"Adress {reader.adress} for it ",
-                $"Email {reader.email} for it ");
+                $"Last name {reader.LastName} for it ",
+                $"First name {reader.FirstName} for it ",
+                $"Patronymic {reader.Patronymic} for it ",
+                $"Category {reader.CategoryId} for it ",
+                $"Adress {reader.Adress} for it ",
+                $"Email {reader.Email} for it ");
 
             dataForm.Insert(0, id.ToString());
 
@@ -431,30 +329,11 @@ namespace hw_2
 
             dataForm.ForEach(x => str += x + " ");
 
-            _readRep.UpdateItem(Reader.Parse(str));
-        }
-
-        public void AddReaderForm()
-        {
-            var textForm = InputTextForm(
-                "Last Name: ",
-                "First Name: ",
-                "Patronymic: ",
-                "Category: ",
-                "Adress: ",
-                "Email: "
-            );
-
-            textForm.Insert(0, Guid.NewGuid().ToString());
-
-            var str = "";
-
-            textForm.ForEach(x => str += x + " ");
-
-            _readRep.AddItem(Reader.Parse(str));
+            _readRep.UpdateItem(reader.Parse(str));
         }
         //
 
+        //
         public void SelectIssuedForm()
         {
             while (true)
@@ -486,7 +365,14 @@ namespace hw_2
                             break;
 
                         case "3":
-                            AddReaderForm();
+                            var i = new Issued();
+
+                            AddItemForm(_issuedRep, i,
+                                nameof(i.ReaderId),
+                                nameof(i.BookId),
+                                nameof(i.DateIssue),
+                                nameof(i.DateDue)
+                            );
                             break;
 
                         case "4":
@@ -522,24 +408,6 @@ namespace hw_2
             }
         }
 
-        public void AddIssuedForm()
-        {
-            var textForm = InputTextForm(
-                "Id reader: ",
-                "Id book: ",
-                "Date of issue: ",
-                "Date of due: "
-            );
-
-            textForm.Insert(0, Guid.NewGuid().ToString());
-
-            var str = "";
-
-            textForm.ForEach(x => str += x + " ");
-
-            _issuedRep.AddItem(Issued.Parse(str));
-        }
-
         public void UpdateIssuedForm()
         {
             var id = Guid.Parse(InputTextForm("Enter the id: ")[0]);
@@ -547,10 +415,10 @@ namespace hw_2
             var issued = _issuedRep.GetById(id);
 
             var dataForm = InputTextForm(
-                $"Id reader {issued.fk_id_reader} for it ",
-                $"Id book {issued.fk_id_book} for it ",
-                $"Date of issue {issued.date_issue} for it ",
-                $"Date of due {issued.date_due} for it ");
+                $"Id reader {issued.ReaderId} for it ",
+                $"Id book {issued.BookId} for it ",
+                $"Date of issue {issued.DateIssue} for it ",
+                $"Date of due {issued.DateDue} for it ");
 
             dataForm.Insert(0, id.ToString());
 
@@ -558,7 +426,7 @@ namespace hw_2
 
             dataForm.ForEach(x => str += x + " ");
 
-            _issuedRep.UpdateItem(Issued.Parse(str));
+            _issuedRep.UpdateItem(new Issued().Parse(str));
         }
         //
 
@@ -594,7 +462,9 @@ namespace hw_2
                             break;
 
                         case "3":
-                            AddCategoryForm();
+                            var c = new Category();
+
+                            AddItemForm(_catRep, c, nameof(c.Name));
                             break;
 
                         case "4":
@@ -630,20 +500,13 @@ namespace hw_2
             }
         }
 
-        public void AddCategoryForm()
-        {
-            var cat = new Category { name = InputTextForm("Name: ")[0] };
-
-            _catRep.AddItem(cat);
-        }
-
         public void UpdateCategoryForm()
         {
             var id = int.Parse(InputTextForm("Enter the id: ")[0]);
 
             var c = _catRep.GetById(id);
 
-            var dataForm = InputTextForm($"Name {c.name} for it ")[0];
+            var dataForm = InputTextForm($"Name {c.Name} for it ")[0];
 
             _catRep.UpdateItem(new Category(id, dataForm));
         }
@@ -681,7 +544,9 @@ namespace hw_2
                             break;
 
                         case "3":
-                            AddGenreForm();
+                            var g = new Genre();
+
+                            AddItemForm(_genRep, g, nameof(g.Name));
                             break;
 
                         case "4":
@@ -717,79 +582,16 @@ namespace hw_2
             }
         }
 
-        public void AddGenreForm()
-        {
-            var g = new Genre { nameGenre = InputTextForm("Name: ")[0] };
-
-            _genRep.AddItem(g);
-        }
-
         public void UpdateGenreForm()
         {
             var id = int.Parse(InputTextForm("Enter the id: ")[0]);
 
             var g = _genRep.GetById(id);
 
-            var dataForm = InputTextForm($"Name {g.nameGenre} for it ")[0];
+            var dataForm = InputTextForm($"Name {g.Name} for it ")[0];
 
             _genRep.UpdateItem(new Genre(id, dataForm));
         }
         //
-
-        public List<string?> InputTextForm(params string[] str)
-        {
-            var listStr = new List<string?>();
-
-            Show(ForeColorServices, () =>
-            {
-                foreach (var line in str)
-                {
-                    Console.Write(line);
-
-                    listStr.Add(Console.ReadLine());
-                }
-            });
-
-            return listStr;
-        }
-
-        public async Task RecordFile()
-        {
-            while (true)
-            {
-                Clear();
-
-                SetForeground(ForeColorServices);
-
-                var formAns = InputTextForm(
-                    "Input a name of file: ",
-                    "Input the URL of site: "
-                );
-
-                SetForeground(ForeColorDefault);
-
-                var file = new FileWorker(formAns[0]);
-
-                try
-                {
-                    await file.RecordHtmlToFile(formAns[1]);
-
-                    Message(ForeColorDefault, "Data is loaded!");
-                }
-                catch (Exception ex)
-                {
-                    Message(ForeColorErrors, ex.Message);
-                }
-
-                var ans = RestartOrExit();
-                switch (ans)
-                {
-                    case 1:
-                        break;
-                    case 2:
-                        return;
-                }
-            }
-        }
     }
 }

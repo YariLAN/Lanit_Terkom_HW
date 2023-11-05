@@ -1,20 +1,20 @@
 ﻿namespace Entities
 {
-    public class Reader
+    public class Reader: EntityInterface<Reader>
     {
-        public Guid id_reader { get; set; }
+        public Guid ReaderId { get; set; }
 
-        public string lastName { get; set; }
+        public string LastName { get; set; }
 
-        public string firstName { get; set; }
+        public string FirstName { get; set; }
 
-        public string patronymic { get; set; }
+        public string Patronymic { get; set; }
 
-        public int fk_id_category { get; set; }
+        public int CategoryId { get; set; }
 
-        public string adress { get; set; }
+        public string Adress { get; set; }
 
-        public string email { get; set; }
+        public string Email { get; set; }
 
         public Reader() { }
 
@@ -27,22 +27,16 @@
             string adress,
             string email
         ) {
-            id_reader = id;
-
-            lastName = last;
-
-            firstName = first;
-
-            this.patronymic = patronymic;
-
-            fk_id_category = category;
-
-            this.adress = adress;
-
-            this.email = email;
+            ReaderId = id;
+            LastName = last;
+            FirstName = first;
+            Patronymic = patronymic;
+            CategoryId = category;
+            Adress = adress;
+            Email = email;
         }
 
-        public static Reader Parse(string str)
+        public Reader Parse(string str)
         {
             string[] items = str.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
@@ -60,13 +54,13 @@
 
         public override string ToString()
         {
-            return $"{id_reader} " +
-                   $"{lastName} " +
-                   $"{firstName} " +
-                   $"{patronymic} " +
-                   $"{fk_id_category} " +
-                   $"{adress} " +
-                   $"{email!}";
+            return $"{ReaderId} " +
+                   $"{LastName} " +
+                   $"{FirstName} " +
+                   $"{Patronymic} " +
+                   $"{CategoryId} " +
+                   $"{Adress} " +
+                   $"{Email!}";
         }
     }
 }

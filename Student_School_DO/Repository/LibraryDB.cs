@@ -5,9 +5,9 @@ namespace Provider
     public class LibraryDB
     {
         private const string ConnectionString =
-            @"Server=laptop-burou19s;Database=LibraryDB;Trusted_Connection=True;Encrypt=False;";
+            @"Server=DESKTOP-OGU2J56;Database=LibraryDB;Trusted_Connection=True;Encrypt=False;";
 
-        public string GetQuery(string query, params string[] fields)
+        public string GetQuery(string query, int countFields)
         {
             string result = "";
 
@@ -23,9 +23,9 @@ namespace Provider
 
                 while (sqlDataReader.Read())
                 {
-                    foreach (var field in fields)
+                    for (int i = 0; i < countFields; i++)
                     {
-                        result += sqlDataReader[field];
+                        result += sqlDataReader.GetValue(i).ToString();
 
                         result += " ";
                     }
@@ -36,13 +36,13 @@ namespace Provider
 
                 return result;
             }
-            catch (SqlException ex)
+            catch
             {
-                throw ex;
+                throw;
             }
         }
 
-        private void Query(string query, params string?[] fields)
+        private void Query(string query, params string[] fields)
         {
             try
             {
@@ -58,23 +58,23 @@ namespace Provider
 
                 sqlConnection.Close();
             }
-            catch (SqlException sqlExc)
+            catch
             {
-                throw sqlExc;
+                throw ;
             }
         }
 
-        public void UpdateQuery(string query, params string?[] fields)
+        public void UpdateQuery(string query, params string[] fields)
         {
             Query(query, fields);
         }
 
-        public void AddQuery(string query, params string?[] fields)
+        public void AddQuery(string query, params string[] fields)
         {
             Query(query, fields);
         }
 
-        public void DeleteQuery(string query, params string?[] fields)
+        public void DeleteQuery(string query, params string[] fields)
         {
             Query(query, fields);
         }

@@ -1,20 +1,20 @@
 ﻿namespace Entities
 {
-    public class Book
+    public class Book: EntityInterface<Book>
     {
-        public Guid id_book { get; set; }
+        public Guid BookId { get; set; }
 
-        public string nameBook { get; set; }
+        public string Name { get; set; }
 
-        public string author { get; set; }
+        public string Author { get; set; }
 
-        public int fk_id_genre { get; set; }
+        public int GenreId { get; set; }
 
-        public int collateralValue { get; set;}
+        public int CollateralValue { get; set;}
 
-        public int rentalCost { get; set; }
+        public int RentalCost { get; set; }
 
-        public int countBook { get; set; }
+        public int CountBook { get; set; }
 
         public Book() { }
 
@@ -27,22 +27,16 @@
             int rental,
             int count
         ) {
-            id_book = id;
-
-            nameBook = name;
-
-            this.author = author;
-
-            fk_id_genre = genre_type;
-
-            collateralValue = collateral;
-
-            rentalCost = rental;
-
-            countBook = count;
+            BookId = id;
+            Name = name;
+            Author = author;
+            GenreId = genre_type;
+            CollateralValue = collateral;
+            RentalCost = rental;
+            CountBook = count;
         }
 
-        public static Book Parse(string str)
+        public Book Parse(string str)
         {
             var book = str.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
@@ -60,13 +54,13 @@
 
         public override string ToString()
         {
-            return $"{id_book} " +
-                   $"{nameBook} " +
-                   $"{author} " +
-                   $"{fk_id_genre} " +
-                   $"{collateralValue} " +
-                   $"{rentalCost} " +
-                   $"{countBook!}";
+            return $"{BookId} " +
+                   $"{Name} " +
+                   $"{Author} " +
+                   $"{GenreId} " +
+                   $"{CollateralValue} " +
+                   $"{RentalCost} " +
+                   $"{CountBook!}";
         }
     }
 }

@@ -33,21 +33,13 @@ namespace Provider
 
             var reader = new Reader();
 
-            var str = db.GetQuery(
-                    GET_ALL,
-                    nameof(reader.id_reader),
-                    nameof(reader.lastName),
-                    nameof(reader.firstName),
-                    nameof(reader.patronymic),
-                    nameof(reader.fk_id_category),
-                    nameof(reader.adress),
-                    nameof(reader.email));
+            var str = db.GetQuery(GET_ALL, 7);
 
             var list = str.Split("\n", StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var line in list)
             {
-                listReader.Add(Reader.Parse(line));
+                listReader.Add(reader.Parse(line));
             }
 
             return listReader;
@@ -57,41 +49,33 @@ namespace Provider
         {
             var reader = new Reader();
 
-            string str = db.GetQuery(
-                string.Format(GET_BY_ID, id),
-                nameof(reader.id_reader),
-                nameof(reader.lastName),
-                nameof(reader.firstName),
-                nameof(reader.patronymic),
-                nameof(reader.fk_id_category),
-                nameof(reader.adress),
-                nameof(reader.email));
+            string str = db.GetQuery(string.Format(GET_BY_ID, id), 7);
 
-            return Reader.Parse(str);
+            return reader.Parse(str);
         }
 
         public void AddItem(Reader reader)
         {
             db.AddQuery(ADD,
-                reader.id_reader.ToString(),
-                reader.lastName,
-                reader.firstName,
-                reader.patronymic,
-                reader.fk_id_category.ToString(),
-                reader.adress,
-                reader.email);
+                reader.ReaderId.ToString(),
+                reader.LastName,
+                reader.FirstName,
+                reader.Patronymic,
+                reader.CategoryId.ToString(),
+                reader.Adress,
+                reader.Email);
         }
 
         public void UpdateItem(Reader reader)
         {
             db.UpdateQuery(UPDATE,
-                reader.id_reader.ToString(),
-                reader.lastName,
-                reader.firstName,
-                reader.patronymic,
-                reader.fk_id_category.ToString(),
-                reader.adress,
-                reader.email);
+                reader.ReaderId.ToString(),
+                reader.LastName,
+                reader.FirstName,
+                reader.Patronymic,
+                reader.CategoryId.ToString(),
+                reader.Adress,
+                reader.Email);
         }
 
         public void DeleteById(Guid id)

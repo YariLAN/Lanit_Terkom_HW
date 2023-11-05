@@ -1,33 +1,29 @@
 ﻿namespace Entities
 {
-    public class Issued
+    public class Issued: EntityInterface<Issued>
     {
-        public Guid id_issued { get; set; }
+        public Guid IssuedId { get; set; }
 
-        public Guid fk_id_reader { get; set; }
+        public Guid ReaderId { get; set; }
 
-        public Guid fk_id_book { get; set; }
+        public Guid BookId { get; set; }
 
-        public DateTime date_issue { get; set; }
+        public DateTime DateIssue { get; set; }
 
-        public DateTime date_due { get; set; }
+        public DateTime DateDue { get; set; }
 
         public Issued() { }
 
         public Issued(Guid id, Guid reader, Guid book, DateTime issue, DateTime due)
         {
-            id_issued = id;
-
-            fk_id_reader = reader;
-
-            fk_id_book = book;
-
-            date_issue = issue;
-
-            date_due = due;
+            IssuedId = id;
+            ReaderId = reader;
+            BookId = book;
+            DateIssue = issue;
+            DateDue = due;
         }
 
-        public static Issued Parse(string s)
+        public Issued Parse(string s)
         {
             var items = s.Split(" ", StringSplitOptions.RemoveEmptyEntries);
 
@@ -43,11 +39,11 @@
 
         public override string ToString()
         {
-            return $"{id_issued} " +
-               $"{fk_id_reader} " +
-               $"{fk_id_book} " +
-               $"{date_issue} " +
-               $"{date_due}";
+            return $"{IssuedId} " +
+               $"{ReaderId} " +
+               $"{BookId} " +
+               $"{DateIssue} " +
+               $"{DateDue}";
         }
     }
 }

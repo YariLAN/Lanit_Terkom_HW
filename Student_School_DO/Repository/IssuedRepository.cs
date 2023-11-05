@@ -29,11 +29,11 @@ namespace Provider
         {
             db.AddQuery(
                 ADD,
-                entity.id_issued.ToString(),
-                entity.fk_id_reader.ToString(),
-                entity.fk_id_book.ToString(),
-                entity.date_issue.ToString(),
-                entity.date_due.ToString()
+                entity.IssuedId.ToString(),
+                entity.ReaderId.ToString(),
+                entity.BookId.ToString(),
+                entity.DateIssue.ToString(),
+                entity.DateDue.ToString()
             );
         }
 
@@ -48,14 +48,7 @@ namespace Provider
 
             var i = new Issued();
 
-            var str = db.GetQuery(
-                GET_ALL,
-                nameof(i.id_issued),
-                nameof(i.fk_id_reader),
-                nameof(i.fk_id_book),
-                nameof(i.date_issue),
-                nameof(i.date_due)
-            );
+            var str = db.GetQuery(GET_ALL, 5);
 
             str = str.Replace("0:00:00", " ");
 
@@ -63,7 +56,7 @@ namespace Provider
 
             foreach (var line in list)
             {
-                listIssued.Add(Issued.Parse(line));
+                listIssued.Add(i.Parse(line));
             }
 
             return listIssued;
@@ -73,26 +66,19 @@ namespace Provider
         {
             var i = new Issued();
 
-            return Issued.Parse(
-                db.GetQuery(
-                    string.Format(GET_BY_ID, id.ToString()),
-                    nameof(i.id_issued),
-                    nameof(i.fk_id_reader),
-                    nameof(i.fk_id_book),
-                    nameof(i.date_issue),
-                    nameof(i.date_due))
-                );
+            return i.Parse(
+                db.GetQuery(string.Format(GET_BY_ID, id.ToString()), 5));
         }
 
         public void UpdateItem(Issued entity)
         {
             db.UpdateQuery(
                 UPDATE,
-                entity.id_issued.ToString(),
-                entity.fk_id_reader.ToString(),
-                entity.fk_id_book.ToString(),
-                entity.date_issue.ToString(),
-                entity.date_due.ToString()
+                entity.IssuedId.ToString(),
+                entity.ReaderId.ToString(),
+                entity.BookId.ToString(),
+                entity.DateIssue.ToString(),
+                entity.DateDue.ToString()
             );
         }
     }

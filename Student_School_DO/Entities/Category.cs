@@ -1,32 +1,34 @@
-﻿using System.Reflection.Metadata.Ecma335;
-
-namespace Entities
+﻿namespace Entities
 {
-    public class Category
+    public class Category: EntityInterface<Category>
     {
-        public int id_category { get; set; }
+        public int CategoryId { get; set; }
 
-        public string name { get; set; }
+        public string Name { get; set; }
 
         public Category() { }
 
         public Category(int id, string name)
         {
-            id_category = id;
-
-            this.name = name;
+            CategoryId = id;
+            Name = name;
         }
 
-        public static Category Parse(string str)
+        public Category Parse(string str)
         {
             string?[] item = str.Split(" ", StringSplitOptions.RemoveEmptyEntries);
+
+            if (!int.TryParse(item[0], out var res))
+            {
+                return new Category { Name = item[0] };
+            }
 
             return new Category(int.Parse(item[0]), item[1]);
         }
 
         public override string ToString()
         {
-            return $"{id_category} {name}";
+            return $"{CategoryId} {Name}";
         }
     }
 }

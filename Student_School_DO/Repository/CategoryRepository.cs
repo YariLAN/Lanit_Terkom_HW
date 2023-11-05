@@ -27,13 +27,13 @@ namespace Provider
             var cat = new Category();
             var listC = new List<Category>();
 
-            var str = db.GetQuery(GET_ALL, nameof(cat.id_category), nameof(cat.name));
+            var str = db.GetQuery(GET_ALL, 2);
 
             var list = str.Split("\n", StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var line in list)
             {
-                listC.Add(Category.Parse(line));
+                listC.Add(cat.Parse(line));
             }
 
             return listC;
@@ -43,22 +43,19 @@ namespace Provider
         {
             var cat = new Category();
 
-            var str =  db.GetQuery(
-                string.Format(GET_BY_ID, id.ToString()),
-                nameof(cat.id_category),
-                nameof(cat.name));
+            var str =  db.GetQuery(string.Format(GET_BY_ID, id.ToString()), 2);
 
-            return Category.Parse(str);
+            return cat.Parse(str);
         }
 
         public void AddItem(Category c)
         {
-            db.AddQuery(ADD, c.name);
+            db.AddQuery(ADD, c.Name);
         }
 
         public void UpdateItem(Category c)
         {
-            db.UpdateQuery(UPDATE, c.id_category.ToString(), c.name);
+            db.UpdateQuery(UPDATE, c.CategoryId.ToString(), c.Name);
         }
 
         public void DeleteById(int id)
