@@ -1,16 +1,26 @@
-﻿using Provider;
-using Entities;
+﻿using EntitiesEF;
 using hw_2;
+using Repositories;
+using System.ComponentModel;
 
-namespace hw_3
+namespace hw_4
 {
-    public class ConsoleMenuWithCRUD: ConsoleMenu
+    public class ConsoleMenuWithLibraryEF: ConsoleMenu
     {
-        private ReaderRepository _readRep = new ReaderRepository();
-        private CategoryRepository _catRep = new CategoryRepository();
-        private GenreRepository _genRep = new GenreRepository();
-        private BookRepository _bookRep = new BookRepository();
-        private IssuedRepository _issuedRep = new IssuedRepository();
+        private BookRepository _bkRep;
+        private ReaderRepository _rdRep;
+        private CategoryRepository _ctRep;
+        private GenreRepository _gnRep;
+        private IssuedRepository _isRep;
+
+        public ConsoleMenuWithLibraryEF(): base()
+        {
+            _bkRep = new BookRepository();
+            _rdRep = new ReaderRepository();
+            _ctRep = new CategoryRepository();
+            _gnRep = new GenreRepository();
+            _isRep = new IssuedRepository();
+        }
 
         public override async Task DisplayMainMenu()
         {
@@ -44,7 +54,7 @@ namespace hw_3
                             break;
 
                         case "4":
-                            LibrarySystem();
+                            LibraryForm();
                             break;
 
                         case "5":
@@ -56,15 +66,15 @@ namespace hw_3
                     }
                 }
             }
-            catch (Exception ex)
+            catch
             {
-                throw ex;
+                throw;
             }
         }
 
-        public void LibrarySystem()
+        public void LibraryForm()
         {
-            while(true)
+            while (true)
             {
                 Clear();
 
@@ -93,16 +103,15 @@ namespace hw_3
                         break;
 
                     case "4":
-                        SelectCategories();
+                        SelectCategoryForm();
                         break;
 
                     case "5":
-                        SelectGenres();
+                        SelectGenreForm();
                         break;
 
                     case "6":
                         return;
-
                     default:
                         break;
                 }
@@ -130,41 +139,42 @@ namespace hw_3
                     switch (Console.ReadLine())
                     {
                         case "1":
-                            _bookRep.GetAll().ForEach(x => Console.WriteLine(x));
+                            GetAllForm(_bkRep);
                             break;
 
                         case "2":
-                            var s = InputTextForm("Enter the id: ")[0];
-
-                            Console.WriteLine(_bookRep.GetById(Guid.Parse(s)));
+                            GetByIdForm(_bkRep);
                             break;
 
                         case "3":
                             var book = new Book();
-
-                            AddItemForm(_bookRep, book,
+                            AddItemForm(_bkRep, book,
                                 nameof(book.Name),
                                 nameof(book.Author),
                                 nameof(book.GenreId),
                                 nameof(book.CollateralValue),
                                 nameof(book.RentalCost),
-                                nameof(book.CountBook)
-                            );
+                                nameof(book.CountBook));
+
                             break;
 
                         case "4":
-                            UpdateBookForm();
+                            UpdateForm(_bkRep, book = new Book(),
+                                nameof(book.Name),
+                                nameof(book.Author),
+                                nameof(book.GenreId),
+                                nameof(book.CollateralValue),
+                                nameof(book.RentalCost),
+                                nameof(book.CountBook));
+
                             break;
 
                         case "5":
-                            s = InputTextForm("Enter the id: ")[0];
-
-                            _bookRep.DeleteById(Guid.Parse(s));
+                            DeleteForm(_bkRep);
                             break;
 
                         case "6":
                             return;
-
                         default:
                             break;
                     }
@@ -174,8 +184,7 @@ namespace hw_3
                     Message(ForeColorErrors, ex.Message);
                 }
 
-                var ans = RestartOrExit();
-                switch (ans)
+                switch (RestartOrExit())
                 {
                     case 1:
                         break;
@@ -185,49 +194,6 @@ namespace hw_3
             }
         }
 
-        public void AddItemForm<T, id>(
-            InterfaceRepository<T, id> repository,
-            EntityInterface<T> entity,
-            params string[] nameOf)
-        {
-            var textForm = InputTextForm(nameOf.Select(x => x + ": ").ToArray());
-
-            if (typeof(id) == typeof(Guid))
-            {
-                textForm.Insert(0, Guid.NewGuid().ToString());
-            }
-
-            var str = "";
-
-            textForm.ForEach(x => str += x + " ");
-
-            repository.AddItem(entity.Parse(str));
-        }
-
-        public void UpdateBookForm()
-        {
-            var id = Guid.Parse(InputTextForm("Enter the id: ")[0]);
-
-            var book = _bookRep.GetById(id);
-
-            var dataForm = InputTextForm(
-                $"Name {book.Name} for it ",
-                $"Author {book.Author} for it ",
-                $"Genre {book.GenreId} for it ",
-                $"Collateral Value {book.CollateralValue} for it ",
-                $"Rental cost {book.RentalCost} for it ",
-                $"Count {book.CountBook} for it ");
-
-            dataForm.Insert(0, id.ToString());
-
-            var str = "";
-
-            dataForm.ForEach(x => str += x + " ");
-
-            _bookRep.UpdateItem(new Book().Parse(str));
-        }
-
-        //
         public void SelectReadersForm()
         {
             while (true)
@@ -249,19 +215,16 @@ namespace hw_3
                     switch (Console.ReadLine())
                     {
                         case "1":
-                            _readRep.GetAll().ForEach(x => Console.WriteLine(x));
+                            GetAllForm(_rdRep);
                             break;
 
                         case "2":
-                            var s = InputTextForm("Enter the id: ")[0];
-
-                            Console.WriteLine(_readRep.GetById(Guid.Parse(s)));
+                            GetByIdForm(_rdRep);
                             break;
 
                         case "3":
                             var r = new Reader();
-
-                            AddItemForm(_readRep, r,
+                            AddItemForm(_rdRep, r,
                                 nameof(r.LastName),
                                 nameof(r.FirstName),
                                 nameof(r.Patronymic),
@@ -269,21 +232,25 @@ namespace hw_3
                                 nameof(r.Adress),
                                 nameof(r.Email)
                             );
+
                             break;
 
                         case "4":
-                            UpdateReaderForm();
+                            UpdateForm(_rdRep, r = new Reader(),
+                                nameof(r.LastName),
+                                nameof(r.FirstName),
+                                nameof(r.Patronymic),
+                                nameof(r.CategoryId),
+                                nameof(r.Adress),
+                                nameof(r.Email));
                             break;
 
                         case "5":
-                            s = InputTextForm("Enter the id: ")[0];
-
-                            _readRep.DeleteById(Guid.Parse(s));
+                            DeleteForm(_rdRep);
                             break;
 
                         case "6":
                             return;
-
                         default:
                             break;
                     }
@@ -293,8 +260,7 @@ namespace hw_3
                     Message(ForeColorErrors, ex.Message);
                 }
 
-                var ans = RestartOrExit();
-                switch (ans)
+                switch (RestartOrExit())
                 {
                     case 1:
                         break;
@@ -304,31 +270,6 @@ namespace hw_3
             }
         }
 
-        public void UpdateReaderForm()
-        {
-            var id = Guid.Parse(InputTextForm("Enter the id: ")[0]);
-
-            var reader = _readRep.GetById(id);
-
-            var dataForm = InputTextForm(
-                $"Last name {reader.LastName} for it ",
-                $"First name {reader.FirstName} for it ",
-                $"Patronymic {reader.Patronymic} for it ",
-                $"Category {reader.CategoryId} for it ",
-                $"Adress {reader.Adress} for it ",
-                $"Email {reader.Email} for it ");
-
-            dataForm.Insert(0, id.ToString());
-
-            var str = "";
-
-            dataForm.ForEach(x => str += x + " ");
-
-            _readRep.UpdateItem(reader.Parse(str));
-        }
-        //
-
-        //
         public void SelectIssuedForm()
         {
             while (true)
@@ -350,34 +291,35 @@ namespace hw_3
                     switch (Console.ReadLine())
                     {
                         case "1":
-                            _issuedRep.GetAll().ForEach(x => Console.WriteLine(x));
+                            GetAllForm(_isRep);
                             break;
 
                         case "2":
-                            var s = InputTextForm("Enter the id: ")[0];
-
-                            Console.WriteLine(_issuedRep.GetById(Guid.Parse(s)));
+                            GetByIdForm(_isRep);
                             break;
 
                         case "3":
                             var i = new Issued();
-
-                            AddItemForm(_issuedRep, i,
+                            AddItemForm(_isRep, i,
                                 nameof(i.ReaderId),
                                 nameof(i.BookId),
                                 nameof(i.DateIssue),
                                 nameof(i.DateDue)
                             );
+
                             break;
 
                         case "4":
-                            UpdateReaderForm();
+                            UpdateForm(_isRep, i = new Issued(),
+                                nameof(i.ReaderId),
+                                nameof(i.BookId),
+                                nameof(i.DateIssue),
+                                nameof(i.DateDue));
+
                             break;
 
                         case "5":
-                            s = InputTextForm("Enter the id: ")[0];
-
-                            _issuedRep.DeleteById(Guid.Parse(s));
+                            DeleteForm(_isRep);
                             break;
 
                         case "6":
@@ -392,8 +334,7 @@ namespace hw_3
                     Message(ForeColorErrors, ex.Message);
                 }
 
-                var ans = RestartOrExit();
-                switch (ans)
+                switch (RestartOrExit())
                 {
                     case 1:
                         break;
@@ -403,30 +344,7 @@ namespace hw_3
             }
         }
 
-        public void UpdateIssuedForm()
-        {
-            var id = Guid.Parse(InputTextForm("Enter the id: ")[0]);
-
-            var issued = _issuedRep.GetById(id);
-
-            var dataForm = InputTextForm(
-                $"Id reader {issued.ReaderId} for it ",
-                $"Id book {issued.BookId} for it ",
-                $"Date of issue {issued.DateIssue} for it ",
-                $"Date of due {issued.DateDue} for it ");
-
-            dataForm.Insert(0, id.ToString());
-
-            var str = "";
-
-            dataForm.ForEach(x => str += x + " ");
-
-            _issuedRep.UpdateItem(new Issued().Parse(str));
-        }
-        //
-
-        //
-        public void SelectCategories()
+        public void SelectCategoryForm()
         {
             while (true)
             {
@@ -447,34 +365,28 @@ namespace hw_3
                     switch (Console.ReadLine())
                     {
                         case "1":
-                            _catRep.GetAll().ForEach(x => Console.WriteLine(x));
+                            GetAllForm(_ctRep);
                             break;
 
                         case "2":
-                            var s = int.Parse(InputTextForm("Enter the id: ")[0]);
-
-                            Console.WriteLine(_catRep.GetById(s));
+                            GetByIdForm(_ctRep);
                             break;
 
                         case "3":
                             var c = new Category();
-
-                            AddItemForm(_catRep, c, nameof(c.Name));
+                            AddItemForm(_ctRep, c, nameof(c.Name));
                             break;
 
                         case "4":
-                            UpdateCategoryForm();
+                            UpdateForm(_ctRep, c = new Category(), nameof(c.Name));
                             break;
 
                         case "5":
-                            s = int.Parse(InputTextForm("Enter the id: ")[0]);
-
-                            _catRep.DeleteById(s);
+                            DeleteForm(_ctRep);
                             break;
 
                         case "6":
                             return;
-
                         default:
                             break;
                     }
@@ -484,8 +396,7 @@ namespace hw_3
                     Message(ForeColorErrors, ex.Message);
                 }
 
-                var ans = RestartOrExit();
-                switch (ans)
+                switch (RestartOrExit())
                 {
                     case 1:
                         break;
@@ -495,20 +406,7 @@ namespace hw_3
             }
         }
 
-        public void UpdateCategoryForm()
-        {
-            var id = int.Parse(InputTextForm("Enter the id: ")[0]);
-
-            var c = _catRep.GetById(id);
-
-            var dataForm = InputTextForm($"Name {c.Name} for it ")[0];
-
-            _catRep.UpdateItem(new Category(id, dataForm));
-        }
-        //
-
-        //
-        public void SelectGenres()
+        public void SelectGenreForm()
         {
             while (true)
             {
@@ -529,34 +427,29 @@ namespace hw_3
                     switch (Console.ReadLine())
                     {
                         case "1":
-                            _genRep.GetAll().ForEach(x => Console.WriteLine(x));
+                            GetAllForm(_gnRep);
                             break;
 
                         case "2":
-                            var id = int.Parse(InputTextForm("Enter the id: ")[0]);
-
-                            Console.WriteLine(_genRep.GetById(id));
+                            GetByIdForm(_gnRep);
                             break;
 
                         case "3":
                             var g = new Genre();
 
-                            AddItemForm(_genRep, g, nameof(g.Name));
+                            AddItemForm(_gnRep, g, nameof(g.Name));
                             break;
 
                         case "4":
-                            UpdateGenreForm();
+                            UpdateForm(_gnRep, g = new Genre(), nameof(g.Name));
                             break;
 
                         case "5":
-                            id = int.Parse(InputTextForm("Enter the id: ")[0]);
-
-                            _genRep.DeleteById(id);
+                            DeleteForm(_gnRep);
                             break;
 
                         case "6":
                             return;
-
                         default:
                             break;
                     }
@@ -566,8 +459,7 @@ namespace hw_3
                     Message(ForeColorErrors, ex.Message);
                 }
 
-                var ans = RestartOrExit();
-                switch (ans)
+                switch (RestartOrExit())
                 {
                     case 1:
                         break;
@@ -577,16 +469,70 @@ namespace hw_3
             }
         }
 
-        public void UpdateGenreForm()
+        public void AddItemForm<T,id>(IBaseRepository<T, id> rep, IEntity<T> entity, params string[] nameOf)
         {
-            var id = int.Parse(InputTextForm("Enter the id: ")[0]);
+            var textForm = InputTextForm(nameOf.Select(x => x + ": ").ToArray());
 
-            var g = _genRep.GetById(id);
+            if (typeof(id) == typeof(Guid))
+            {
+                textForm.Insert(0, Guid.NewGuid().ToString());
+            }
 
-            var dataForm = InputTextForm($"Name {g.Name} for it ")[0];
+            var str = "";
 
-            _genRep.UpdateItem(new Genre(id, dataForm));
+            textForm.ForEach(x => str += x + " ");
+
+            rep.AddItem(entity.Parse(str));
         }
-        //
+
+        public void GetAllForm<T, id>(IBaseRepository<T, id> rep)
+        {
+            Show(ForeColorDefault, () =>
+            {
+                rep.GetAll().ForEach(x => Console.WriteLine(x));
+            });
+        }
+
+        public id IdIdentificator<T, id>(string inputId, IBaseRepository<T, id> rep)
+        {
+            return (id)TypeDescriptor.GetConverter(typeof(id)).ConvertFromInvariantString(inputId);
+        }
+
+        public T? GetByIdForm<T, id>(IBaseRepository<T, id> rep)
+        {
+            var inputId = InputTextForm("Enter the id: ")[0];
+
+            id getId = IdIdentificator(inputId, rep);
+
+            var ent = rep.GetById(getId);
+
+            Message(ForeColorDefault, ent.ToString());
+
+            return ent;
+        }
+
+        public void DeleteForm<T, id>(IBaseRepository<T, id> rep)
+        {
+            var inputId = InputTextForm("Enter the id: ")[0];
+
+            id getId = IdIdentificator(inputId, rep);
+
+            rep.DeleteById(getId);
+        }
+
+        public void UpdateForm<T, id>(IBaseRepository<T, id> rep, IEntity<T> entity, params string[] fields)
+        {
+            var ent = GetByIdForm(rep);
+
+            var textForm = InputTextForm(fields.Select(x => $"{x}: ").ToArray());
+
+            var concat = "";
+
+            textForm.Insert(0, ent.ToString().Split(" ")[0]);
+
+            textForm.ForEach(x => concat += x + " ");
+
+            rep.UpdateItem(entity.Parse(concat));
+        }
     }
 }

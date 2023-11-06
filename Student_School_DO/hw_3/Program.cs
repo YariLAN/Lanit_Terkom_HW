@@ -1,8 +1,6 @@
-﻿using hw_2;
-
-namespace hw_3
+﻿namespace hw_3
 {
-    internal class Program
+    public class Program
     {
         static void Main(string[] args)
         {

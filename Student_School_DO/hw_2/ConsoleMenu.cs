@@ -1,6 +1,4 @@
-﻿using System.Xml.Serialization;
-
-namespace hw_2
+﻿namespace hw_2
 {
     public class ConsoleMenu
     {
