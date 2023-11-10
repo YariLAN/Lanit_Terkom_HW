@@ -186,8 +186,8 @@ namespace hw_3
         }
 
         public void AddItemForm<T, id>(
-            InterfaceRepository<T, id> repository,
-            EntityInterface<T> entity,
+            IRepository<T, id> repository,
+            IEntity<T> entity,
             params string[] nameOf)
         {
             var textForm = InputTextForm(nameOf.Select(x => x + ": ").ToArray());

@@ -1,15 +1,15 @@
 ﻿namespace Provider
 {
-    public interface InterfaceRepository<T, identificator>
+    public interface IRepository<T, identificatory>
     {
         public List<T> GetAll();
 
-        public T GetById(identificator id);
+        public T GetById(identificatory id);
 
         public void AddItem(T entity);
 
         public void UpdateItem(T entity);
 
-        public void DeleteById(identificator id);
+        public void DeleteById(identificatory id);
     }
 }

@@ -1,8 +1,8 @@
 CREATE TABLE issued
 (
 	id_issued uniqueidentifier PRIMARY KEY,
-	fk_id_reader uniqueidentifier REFERENCES readers(id_reader) NOT NULL,
-	fk_id_book uniqueidentifier REFERENCES books(id_book) NOT NULL,
+	id_reader uniqueidentifier REFERENCES readers(id_reader) NOT NULL,
+	id_book uniqueidentifier REFERENCES books(id_book) NOT NULL,
 	date_issue DATE NOT NULL,
 	date_due DATE NOT NULL
 );

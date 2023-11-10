@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public interface EntityInterface<T>
+    public interface IEntity<T>
     {
         public T Parse(string str);
     }

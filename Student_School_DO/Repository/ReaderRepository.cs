@@ -2,22 +2,22 @@
 
 namespace Provider
 {
-    public class ReaderRepository: InterfaceRepository<Reader, Guid>
+    public class ReaderRepository: IRepository<Reader, Guid>
     {
-        private LibraryDB db = new LibraryDB();
+        private LibraryDB _db = new LibraryDB();
 
-        private const string GET_ALL = @"SELECT * FROM readers;";
+        private const string GET_ALL_SQL = @"SELECT * FROM readers;";
 
-        private const string GET_BY_ID =
+        private const string GET_BY_ID_SQL =
             @"SELECT * FROM readers WHERE id_reader = '{0}';";
 
-        private const string ADD =
+        private const string ADD_SQL =
             @"INSERT INTO readers VALUES ('{0}', '{1}', '{2}', '{3}', {4}, '{5}', '{6}');";
 
-        private const string DELETE =
+        private const string DELETE_SQL =
             @"DELETE FROM readers WHERE id_reader = '{0}';";
 
-        private const string UPDATE =
+        private const string UPDATE_SQL =
             @"UPDATE readers
             SET lastName = '{1}',
                 firstName = '{2}',
@@ -29,34 +29,33 @@ namespace Provider
 
         public List<Reader> GetAll()
         {
-            var listReader = new List<Reader>();
-
+            var readerList = new List<Reader>();
             var reader = new Reader();
 
-            var str = db.GetQuery(GET_ALL, 7);
+            var str = _db.GetQuery(GET_ALL_SQL, 7);
 
             var list = str.Split("\n", StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var line in list)
             {
-                listReader.Add(reader.Parse(line));
+                readerList.Add(reader.Parse(line));
             }
 
-            return listReader;
+            return readerList;
         }
 
         public Reader GetById(Guid id)
         {
             var reader = new Reader();
 
-            string str = db.GetQuery(string.Format(GET_BY_ID, id), 7);
+            string str = _db.GetQuery(string.Format(GET_BY_ID_SQL, id), 7);
 
             return reader.Parse(str);
         }
 
         public void AddItem(Reader reader)
         {
-            db.AddQuery(ADD,
+            _db.AddQuery(ADD_SQL,
                 reader.ReaderId.ToString(),
                 reader.LastName,
                 reader.FirstName,
@@ -68,7 +67,7 @@ namespace Provider
 
         public void UpdateItem(Reader reader)
         {
-            db.UpdateQuery(UPDATE,
+            _db.UpdateQuery(UPDATE_SQL,
                 reader.ReaderId.ToString(),
                 reader.LastName,
                 reader.FirstName,
@@ -80,7 +79,7 @@ namespace Provider
 
         public void DeleteById(Guid id)
         {
-            db.DeleteQuery(DELETE, id.ToString());
+            _db.DeleteQuery(DELETE_SQL, id.ToString());
         }
     }
 }

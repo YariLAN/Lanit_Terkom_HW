@@ -2,22 +2,22 @@
 
 namespace Provider
 {
-    public class IssuedRepository : InterfaceRepository<Issued, Guid>
+    public class IssuedRepository : IRepository<Issued, Guid>
     {
-        LibraryDB db = new LibraryDB();
+        LibraryDB _db = new LibraryDB();
 
-        private const string GET_ALL = @"SELECT * FROM issued";
+        private const string GET_ALL_SQL = @"SELECT * FROM issued";
 
-        private const string GET_BY_ID =
+        private const string GET_BY_ID_SQL =
             @"SELECT * FROM issued WHERE id_issued = '{0}'";
 
-        private const string ADD =
+        private const string ADD_SQL =
             @"INSERT INTO issued VALUES ('{0}', '{1}', '{2}', '{3}', '{4}');";
 
-        private const string DELETE =
+        private const string DELETE_SQL =
             @"DELETE FROM issued WHERE id_issued = '{0}'";
 
-        private const string UPDATE =
+        private const string UPDATE_SQL =
             @"UPDATE issued
             SET fk_id_reader = '{1}',
                 fk_id_book = '{2}',
@@ -27,8 +27,8 @@ namespace Provider
 
         public void AddItem(Issued entity)
         {
-            db.AddQuery(
-                ADD,
+            _db.AddQuery(
+                ADD_SQL,
                 entity.IssuedId.ToString(),
                 entity.ReaderId.ToString(),
                 entity.BookId.ToString(),
@@ -39,16 +39,15 @@ namespace Provider
 
         public void DeleteById(Guid id)
         {
-            db.DeleteQuery(DELETE, id.ToString());
+            _db.DeleteQuery(DELETE_SQL, id.ToString());
         }
 
         public List<Issued> GetAll()
         {
-            var listIssued = new List<Issued>();
+            var issued = new Issued();
+            var issuedList = new List<Issued>();
 
-            var i = new Issued();
-
-            var str = db.GetQuery(GET_ALL, 5);
+            var str = _db.GetQuery(GET_ALL_SQL, 5);
 
             str = str.Replace("0:00:00", " ");
 
@@ -56,10 +55,10 @@ namespace Provider
 
             foreach (var line in list)
             {
-                listIssued.Add(i.Parse(line));
+                issuedList.Add(issued.Parse(line));
             }
 
-            return listIssued;
+            return issuedList;
         }
 
         public Issued GetById(Guid id)
@@ -67,13 +66,13 @@ namespace Provider
             var i = new Issued();
 
             return i.Parse(
-                db.GetQuery(string.Format(GET_BY_ID, id.ToString()), 5));
+                _db.GetQuery(string.Format(GET_BY_ID_SQL, id.ToString()), 5));
         }
 
         public void UpdateItem(Issued entity)
         {
-            db.UpdateQuery(
-                UPDATE,
+            _db.UpdateQuery(
+                UPDATE_SQL,
                 entity.IssuedId.ToString(),
                 entity.ReaderId.ToString(),
                 entity.BookId.ToString(),

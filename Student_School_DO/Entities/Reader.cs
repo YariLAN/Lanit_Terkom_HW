@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public class Reader: EntityInterface<Reader>
+    public class Reader: IEntity<Reader>
     {
         public Guid ReaderId { get; set; }
 
@@ -25,8 +25,8 @@
             string patronymic,
             int category,
             string adress,
-            string email
-        ) {
+            string email)
+        {
             ReaderId = id;
             LastName = last;
             FirstName = first;

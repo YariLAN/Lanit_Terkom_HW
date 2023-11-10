@@ -2,22 +2,22 @@
 
 namespace Provider
 {
-    public class BookRepository: InterfaceRepository<Book, Guid>
+    public class BookRepository: IRepository<Book, Guid>
     {
-        LibraryDB db = new LibraryDB();
+        LibraryDB _db = new LibraryDB();
 
-        private const string GET_ALL = @"SELECT * FROM books";
+        private const string GET_ALL_SQL = @"SELECT * FROM books";
 
-        private const string GET_BY_ID =
+        private const string GET_BY_ID_SQL =
             @"SELECT * FROM books WHERE id_book = '{0}'";
 
-        private const string ADD =
+        private const string ADD_SQL =
             @"INSERT INTO books VALUES ('{0}', '{1}', '{2}', {3}, {4}, {5}, {6});";
 
-        private const string DELETE =
+        private const string DELETE_SQL =
             @"DELETE FROM books WHERE id_book = '{0}'";
 
-        private const string UPDATE =
+        private const string UPDATE_SQL =
             @"UPDATE books
             SET nameBook = '{1}',
                 author = '{2}',
@@ -29,35 +29,35 @@ namespace Provider
 
         public List<Book> GetAll()
         {
-            var b = new Book();
+            var book = new Book();
 
-            var listBook = new List<Book>();
+            var bookList = new List<Book>();
 
-            var str = db.GetQuery(GET_ALL, 7);
+            var str = _db.GetQuery(GET_ALL_SQL, 7);
 
             var list = str.Split("\n", StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var line in list)
             {
-                listBook.Add(new Book().Parse(line));
+                bookList.Add(book.Parse(line));
             }
 
-            return listBook;
+            return bookList;
         }
 
         public Book GetById(Guid id)
         {
-            var b = new Book();
+            var book = new Book();
 
-            var str = db.GetQuery(string.Format(GET_BY_ID, id), 7);
+            var str = _db.GetQuery(string.Format(GET_BY_ID_SQL, id), 7);
 
-            return b.Parse(str);
+            return book.Parse(str);
         }
 
         public void AddItem(Book entity)
         {
-            db.AddQuery(
-                ADD,
+            _db.AddQuery(
+                ADD_SQL,
                 entity.BookId.ToString(),
                 entity.Name,
                 entity.Author,
@@ -69,8 +69,8 @@ namespace Provider
 
         public void UpdateItem(Book entity)
         {
-            db.UpdateQuery(
-                UPDATE,
+            _db.UpdateQuery(
+                UPDATE_SQL,
                 entity.BookId.ToString(),
                 entity.Name,
                 entity.Author,
@@ -82,7 +82,7 @@ namespace Provider
 
         public void DeleteById(Guid id)
         {
-            db.DeleteQuery(DELETE, id.ToString());
+            _db.DeleteQuery(DELETE_SQL, id.ToString());
         }
     }
 }

@@ -2,65 +2,65 @@
 
 namespace Provider
 {
-    public class CategoryRepository: InterfaceRepository<Category, int>
+    public class CategoryRepository: IRepository<Category, int>
     {
-        LibraryDB db = new LibraryDB();
+        LibraryDB _db = new LibraryDB();
 
-        private const string GET_ALL = @"SELECT * FROM categories";
+        private const string GET_ALL_SQL = @"SELECT * FROM categories";
 
-        private const string GET_BY_ID =
+        private const string GET_BY_ID_SQL =
             @"SELECT * FROM categories WHERE id_category = {0}";
 
-        private const string ADD =
+        private const string ADD_SQL =
             @"INSERT INTO categories VALUES ('{0}');";
 
-        private const string DELETE =
+        private const string DELETE_SQL =
             @"DELETE FROM categories WHERE id_category = {0}";
 
-        private const string UPDATE =
+        private const string UPDATE_SQL =
             @"UPDATE categories
             SET name = '{1}'
             WHERE id_category = {0}";
 
         public List<Category> GetAll()
         {
-            var cat = new Category();
-            var listC = new List<Category>();
+            var category = new Category();
+            var categoryList = new List<Category>();
 
-            var str = db.GetQuery(GET_ALL, 2);
+            var str = _db.GetQuery(GET_ALL_SQL, 2);
 
             var list = str.Split("\n", StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var line in list)
             {
-                listC.Add(cat.Parse(line));
+                categoryList.Add(category.Parse(line));
             }
 
-            return listC;
+            return categoryList;
         }
 
         public Category GetById(int id)
         {
-            var cat = new Category();
+            var category = new Category();
 
-            var str =  db.GetQuery(string.Format(GET_BY_ID, id.ToString()), 2);
+            var str =  _db.GetQuery(string.Format(GET_BY_ID_SQL, id.ToString()), 2);
 
-            return cat.Parse(str);
+            return category.Parse(str);
         }
 
-        public void AddItem(Category c)
+        public void AddItem(Category category)
         {
-            db.AddQuery(ADD, c.Name);
+            _db.AddQuery(ADD_SQL, category.Name);
         }
 
-        public void UpdateItem(Category c)
+        public void UpdateItem(Category category)
         {
-            db.UpdateQuery(UPDATE, c.CategoryId.ToString(), c.Name);
+            _db.UpdateQuery(UPDATE_SQL, category.CategoryId.ToString(), category.Name);
         }
 
         public void DeleteById(int id)
         {
-            db.DeleteQuery(DELETE, id.ToString());
+            _db.DeleteQuery(DELETE_SQL, id.ToString());
         }
     }
 }

@@ -3,14 +3,14 @@ CREATE TABLE books
 	id_book uniqueidentifier PRIMARY KEY,
 	nameBook nchar(100) NOT NULL,
 	author nchar(100) NOT NULL,
-	fk_id_genre int REFERENCES genre_type(id_genre),
+	id_genre int REFERENCES genre_type(id_genre),
 	collateralValue INT NOT NULL,
 	rentalCost INT NOT NULL,
 	countBook INT NOT NULL
 );
 
-INSERT INTO books 
-	VALUES 
+INSERT INTO books
+	VALUES
 		('D8A661A8-2F91-46B1-A32E-5192F1D104E4','Generation_«P»','Victor_Pelevin',2,600,60,0),
 		('DE8DFCAD-7B05-4B04-A88E-7EB03F4CB708','Crime_and_Punishment','Fedor_Dostoevsky',1,600,50,8),
 		('8C8D269D-F54D-4339-8A82-38DF8C748DA8','The_first_scientific_history_of_the_war_of_1812','Evgeniy_Ponasenkov',9,1000,100,0),

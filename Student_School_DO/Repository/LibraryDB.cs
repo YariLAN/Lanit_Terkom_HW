@@ -1,4 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
+using System.ComponentModel;
+using System.Text;
 
 namespace Provider
 {
@@ -9,8 +11,6 @@ namespace Provider
 
         public string GetQuery(string query, int countFields)
         {
-            string result = "";
-
             try
             {
                 using var sqlConnection = new SqlConnection(ConnectionString);
@@ -21,20 +21,21 @@ namespace Provider
 
                 using var sqlDataReader = sqlCommand.ExecuteReader();
 
+                StringBuilder sb = new StringBuilder();
+
                 while (sqlDataReader.Read())
                 {
                     for (int i = 0; i < countFields; i++)
                     {
-                        result += sqlDataReader.GetValue(i).ToString();
-
-                        result += " ";
+                        sb.Append(sqlDataReader.GetValue(i).ToString());
+                        sb.Append(" ");
                     }
-                    result += "\n";
+                    sb.Append("\n");
                 }
 
                 sqlConnection.Close();
 
-                return result;
+                return sb.ToString();
             }
             catch
             {

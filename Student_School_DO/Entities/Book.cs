@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public class Book: EntityInterface<Book>
+    public class Book: IEntity<Book>
     {
         public Guid BookId { get; set; }
 
@@ -25,8 +25,8 @@
             int genre_type,
             int collateral,
             int rental,
-            int count
-        ) {
+            int count)
+        {
             BookId = id;
             Name = name;
             Author = author;

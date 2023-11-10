@@ -2,66 +2,66 @@
 
 namespace Provider
 {
-    public class GenreRepository : InterfaceRepository<Genre, int>
+    public class GenreRepository : IRepository<Genre, int>
     {
-        LibraryDB db = new LibraryDB();
+        LibraryDB _db = new LibraryDB();
 
-        private const string GET_ALL = @"SELECT * FROM genre_type";
+        private const string GET_ALL_SQL = @"SELECT * FROM genre_type";
 
-        private const string GET_BY_ID =
+        private const string GET_BY_ID_SQL =
             @"SELECT * FROM genre_type WHERE id_genre = {0}";
 
-        private const string ADD =
+        private const string ADD_SQL =
             @"INSERT INTO genre_type VALUES ('{0}');";
 
-        private const string DELETE =
+        private const string DELETE_SQL =
             @"DELETE FROM genre_type WHERE id_genre = {0}";
 
-        private const string UPDATE =
+        private const string UPDATE_SQL =
             @"UPDATE genre_type
             SET nameGenre = '{1}'
             WHERE id_genre = {0}";
 
         public void AddItem(Genre entity)
         {
-            db.AddQuery(ADD, entity.Name);
+            _db.AddQuery(ADD_SQL, entity.Name);
         }
 
         public void DeleteById(int id)
         {
-            db.DeleteQuery(DELETE, id.ToString());
+            _db.DeleteQuery(DELETE_SQL, id.ToString());
         }
 
         public List<Genre> GetAll()
         {
-            var gen = new Genre();
+            var genre = new Genre();
 
-            var listG = new List<Genre>();
+            var genreList = new List<Genre>();
 
-            var str = db.GetQuery(GET_ALL, 2);
+            var str = _db.GetQuery(GET_ALL_SQL, 2);
 
             var list = str.Split("\n", StringSplitOptions.RemoveEmptyEntries);
 
             foreach (var line in list)
             {
-                listG.Add(gen.Parse(line));
+                genreList.Add(genre.Parse(line));
             }
 
-            return listG;
+            return genreList;
         }
 
         public Genre GetById(int id)
         {
-            var gen = new Genre();
+            var genre = new Genre();
 
-            var str = db.GetQuery(string.Format(GET_BY_ID, id.ToString()), 2);
+            var str = _db.GetQuery(string.Format(GET_BY_ID_SQL, id.ToString()), 2);
 
-            return gen.Parse(str);
+            return genre.Parse(str);
         }
 
-        public void UpdateItem(Genre g)
+        public void UpdateItem(Genre entity)
         {
-            db.UpdateQuery(UPDATE, g.GenreId.ToString(), g.Name);
+            _db.UpdateQuery(UPDATE_SQL, entity.GenreId.ToString(), entity.Name);
         }
     }
 }
