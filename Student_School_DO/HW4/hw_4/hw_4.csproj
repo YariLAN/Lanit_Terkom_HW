@@ -1,14 +1,19 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
+    <OutputType>Exe</OutputType>
     <TargetFramework>net7.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\hw_2\hw_2.csproj" />
+    <ProjectReference Include="..\..\hw_3\h3.csproj" />
+
     <ProjectReference Include="..\EntitiesEF\EntitiesEF.csproj" />
     <ProjectReference Include="..\ProviderEF\ProviderEF.csproj" />
+    <ProjectReference Include="..\Repositories\Repositories.csproj" />
   </ItemGroup>
 
 </Project>

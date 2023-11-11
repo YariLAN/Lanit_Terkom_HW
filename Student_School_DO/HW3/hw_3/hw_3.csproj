@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -8,9 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\hw_2\hw_2.csproj" />
     <ProjectReference Include="..\Entities\Entities.csproj" />
-    <ProjectReference Include="..\hw_2\hw_2.csproj" />
-    <ProjectReference Include="..\Repository\Provider.csproj" />
+    <ProjectReference Include="..\Provider\Provider.csproj" />
   </ItemGroup>
 
 </Project>
