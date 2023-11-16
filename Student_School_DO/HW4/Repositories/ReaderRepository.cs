@@ -4,7 +4,7 @@ using ProviderEF;
 
 namespace Repositories
 {
-    public class ReaderRepository: IBaseRepository<Reader, Guid>
+    public class ReaderRepository : IBaseRepository<Reader, Guid>
     {
         private LibraryDB _db;
 

@@ -1,6 +1,6 @@
 ﻿namespace EntitiesEF
 {
-    public class Category: IEntity<Category>
+    public class Category : IEntity<Category>
     {
         public int CategoryId { get; set; }
 

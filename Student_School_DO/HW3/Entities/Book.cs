@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public class Book: IEntity<Book>
+    public class Book : IEntity<Book>
     {
         public Guid BookId { get; set; }
 

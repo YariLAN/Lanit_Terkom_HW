@@ -4,7 +4,7 @@ using EntitiesEF;
 
 namespace ProviderEF
 {
-    public class LibraryDB: DbContext
+    public class LibraryDB : DbContext
     {
         private const string ConnectionString =
             @"Server=DESKTOP-OGU2J56;Database=LibraryDB;Trusted_Connection=True;Encrypt=False;";

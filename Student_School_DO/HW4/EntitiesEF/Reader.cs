@@ -1,6 +1,6 @@
 ﻿namespace EntitiesEF
 {
-    public class Reader: IEntity<Reader>
+    public class Reader : IEntity<Reader>
     {
         public Guid ReaderId { get; set; }
 

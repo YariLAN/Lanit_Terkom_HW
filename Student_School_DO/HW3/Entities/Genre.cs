@@ -1,6 +1,6 @@
 ﻿namespace Entities
 {
-    public class Genre: IEntity<Genre>
+    public class Genre : IEntity<Genre>
     {
         public int GenreId;
 

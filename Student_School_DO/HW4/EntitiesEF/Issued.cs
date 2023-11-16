@@ -1,6 +1,6 @@
 ﻿namespace EntitiesEF
 {
-    public class Issued: IEntity<Issued>
+    public class Issued : IEntity<Issued>
     {
         public Guid IssuedId { get; set; }
 

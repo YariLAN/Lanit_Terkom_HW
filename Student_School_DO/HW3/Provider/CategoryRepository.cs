@@ -2,7 +2,7 @@
 
 namespace Provider
 {
-    public class CategoryRepository: IRepository<Category, int>
+    public class CategoryRepository : IRepository<Category, int>
     {
         LibraryDB _db = new LibraryDB();
 

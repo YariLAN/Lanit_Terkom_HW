@@ -2,7 +2,7 @@
 
 namespace Provider
 {
-    public class BookRepository: IRepository<Book, Guid>
+    public class BookRepository : IRepository<Book, Guid>
     {
         LibraryDB _db = new LibraryDB();
 
