@@ -1,6 +1,6 @@
-﻿using EntitiesEF;
+﻿using Commands.Commands.Reader;
 using Microsoft.AspNetCore.Mvc;
-using Repositories;
+using Models;
 
 namespace hw_5.Controllers
 {
@@ -8,50 +8,46 @@ namespace hw_5.Controllers
     [ApiController]
     public class ReadersController : ControllerBase
     {
-        private readonly IBaseRepository<Reader, Guid> _rep;
+        private readonly IReaderCommand _readerCommand;
 
-        public ReadersController(IBaseRepository<Reader, Guid> rep)
+        public ReadersController(IReaderCommand reader)
         {
-            _rep = rep;
+            _readerCommand = reader;
         }
 
         // GET: api/<ReaderController>
         [HttpGet]
-        public IEnumerable<Reader> Get()
+        public Responce<IEnumerable<ReaderModel>> Get()
         {
-            return _rep.GetAll();
+            return _readerCommand.GetAll();
         }
 
         // GET api/<ReaderController>/5
         [HttpGet("{id}")]
-        public Reader? Get(Guid id)
+        public Responce<ReaderModel> Get(Guid id)
         {
-            return _rep.GetById(id);
+            return _readerCommand.GetById(id);
         }
 
         // POST api/<ReaderController>
         [HttpPost]
-        public void Post([FromBody] Reader entity)
+        public Responce<Guid> Post([FromBody] ReaderModel entity)
         {
-            entity.ReaderId = Guid.NewGuid();
-
-            _rep.AddItem(entity);
+            return _readerCommand.Create(entity);
         }
 
         // PUT api/<ReaderController>/5
         [HttpPut("{id}")]
-        public void Put(Guid id, [FromBody] Reader entity)
+        public Responce<Guid> Put(Guid id, [FromBody] ReaderModel entity)
         {
-            entity.ReaderId = id;
-
-            _rep.UpdateItem(entity);
+            return _readerCommand.Update(id, entity);
         }
 
         // DELETE api/<ReaderController>/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public Responce<Guid> Delete(Guid id)
         {
-            _rep.DeleteById(id);
+            return _readerCommand.Delete(id);
         }
     }
 }

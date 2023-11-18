@@ -1,4 +1,6 @@
-﻿namespace EntitiesEF
+﻿using System.Text.Json.Serialization;
+
+namespace EntitiesEF
 {
     public class Genre : IEntity<Genre>
     {
@@ -6,7 +8,7 @@
 
         public string Name { get; set; }
 
-        public ICollection<Book>? Books { get; set; } = new List<Book>();
+        public ICollection<Book> Books { get; set; } = new List<Book>();
 
         public Genre() { }
 

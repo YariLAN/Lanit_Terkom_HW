@@ -1,5 +1,8 @@
-﻿using EntitiesEF;
+﻿using Commands.Commands.Issued;
+using Commands.Commands.Reader;
+using EntitiesEF;
 using Microsoft.AspNetCore.Mvc;
+using Models;
 using Repositories;
 
 namespace hw_5.Controllers
@@ -8,50 +11,46 @@ namespace hw_5.Controllers
     [ApiController]
     public class IssuedsController : ControllerBase
     {
-        private readonly IBaseRepository<Issued, Guid> _rep;
+        private readonly IIssuedCommand _issuedCommand;
 
-        public IssuedsController(IBaseRepository<Issued, Guid> rep)
+        public IssuedsController(IIssuedCommand issued)
         {
-            _rep = rep;
+            _issuedCommand = issued;
         }
 
-        // GET: api/<IssuedsController>
+        // GET: api/<ReaderController>
         [HttpGet]
-        public IEnumerable<Issued> Get()
+        public Responce<IEnumerable<IssuedModel>> Get()
         {
-            return _rep.GetAll();
+            return _issuedCommand.GetAll();
         }
 
-        // GET api/<IssuedsController>/5
+        // GET api/<ReaderController>/5
         [HttpGet("{id}")]
-        public Issued? Get(Guid id)
+        public Responce<IssuedModel> Get(Guid id)
         {
-            return _rep.GetById(id);
+            return _issuedCommand.GetById(id);
         }
 
-        // POST api/<IssuedsController>
+        // POST api/<ReaderController>
         [HttpPost]
-        public void Post([FromBody] Issued entity)
+        public Responce<Guid> Post([FromBody] IssuedModel entity)
         {
-            entity.IssuedId = Guid.NewGuid();
-
-            _rep.AddItem(entity);
+            return _issuedCommand.Create(entity);
         }
 
-        // PUT api/<IssuedsController>/5
+        // PUT api/<ReaderController>/5
         [HttpPut("{id}")]
-        public void Put(Guid id, [FromBody] Issued entity)
+        public Responce<Guid> Put(Guid id, [FromBody] IssuedModel entity)
         {
-            entity.ReaderId = id;
-
-            _rep.UpdateItem(entity);
+            return _issuedCommand.Update(id, entity);
         }
 
-        // DELETE api/<IssuedsController>/5
+        // DELETE api/<ReaderController>/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public Responce<Guid> Delete(Guid id)
         {
-            _rep.DeleteById(id);
+            return _issuedCommand.Delete(id);
         }
     }
 }

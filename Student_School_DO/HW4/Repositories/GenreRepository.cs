@@ -33,7 +33,9 @@ namespace Repositories
 
         public Genre? GetById(int id)
         {
-            return _db.Genres.FirstOrDefault(b => b.GenreId == id);
+            return _db.Genres
+                    .Include(g => g.Books)
+                    .FirstOrDefault(b => b.GenreId == id);
         }
 
         public void UpdateItem(Genre entity)

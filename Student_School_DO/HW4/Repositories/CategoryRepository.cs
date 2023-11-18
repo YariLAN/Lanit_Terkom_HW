@@ -33,7 +33,9 @@ namespace Repositories
 
         public Category? GetById(int id)
         {
-            var cat = _db.Categories.FirstOrDefault(b => b.CategoryId == id);
+            var cat = _db.Categories
+                        .Include(c => c.Readers)
+                        .FirstOrDefault(b => b.CategoryId == id);
 
             return cat;
         }

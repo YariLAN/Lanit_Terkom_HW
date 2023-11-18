@@ -1,6 +1,6 @@
-﻿using EntitiesEF;
+﻿using Commands.Commands.Book;
 using Microsoft.AspNetCore.Mvc;
-using Repositories;
+using Models;
 
 namespace hw_5.Controllers
 {
@@ -8,50 +8,46 @@ namespace hw_5.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        private readonly IBaseRepository<Book, Guid> _rep;
+        private readonly IBookCommand _bookCommand;
 
-        public BooksController(IBaseRepository<Book, Guid> rep)
+        public BooksController(IBookCommand book)
         {
-            _rep = rep;
+            _bookCommand = book;
         }
 
-        // GET: api/<BooksController>
+        // GET: api/<ReaderController>
         [HttpGet]
-        public IEnumerable<Book> Get()
+        public Responce<IEnumerable<BookModel>> Get()
         {
-            return _rep.GetAll();
+            return _bookCommand.GetAll();
         }
 
-        // GET api/<BooksController>/5
+        // GET api/<ReaderController>/5
         [HttpGet("{id}")]
-        public Book? Get(Guid id)
+        public Responce<BookModel> Get(Guid id)
         {
-            return _rep.GetById(id);
+            return _bookCommand.GetById(id);
         }
 
-        // POST api/<BooksController>
+        // POST api/<ReaderController>
         [HttpPost]
-        public void Post([FromBody] Book entity)
+        public Responce<Guid> Post([FromBody] BookModel entity)
         {
-            entity.BookId = Guid.NewGuid();
-
-            _rep.AddItem(entity);
+            return _bookCommand.Create(entity);
         }
 
-        // PUT api/<BooksController>/5
+        // PUT api/<ReaderController>/5
         [HttpPut("{id}")]
-        public void Put(Guid id, [FromBody] Book entity)
+        public Responce<Guid> Put(Guid id, [FromBody] BookModel entity)
         {
-            entity.BookId = id;
-
-            _rep.UpdateItem(entity);
+            return _bookCommand.Update(id, entity);
         }
 
-        // DELETE api/<BooksController>/5
+        // DELETE api/<ReaderController>/5
         [HttpDelete("{id}")]
-        public void Delete(Guid id)
+        public Responce<Guid> Delete(Guid id)
         {
-            _rep.DeleteById(id);
+            return _bookCommand.Delete(id);
         }
     }
 }

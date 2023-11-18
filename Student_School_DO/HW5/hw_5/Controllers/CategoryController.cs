@@ -1,6 +1,6 @@
-﻿using EntitiesEF;
+﻿using Commands.Commands.Category;
 using Microsoft.AspNetCore.Mvc;
-using Repositories;
+using Models;
 
 namespace hw_5.Controllers
 {
@@ -8,48 +8,46 @@ namespace hw_5.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private IBaseRepository<Category, int> _rep;
+        private readonly ICategoryCommand _catCommand;
 
-        public CategoryController(IBaseRepository<Category, int> rep)
+        public CategoryController(ICategoryCommand category)
         {
-            _rep = rep;
+            _catCommand = category;
         }
 
-        // GET: api/<CategoryController>
+        // GET: api/<GenreController>
         [HttpGet]
-        public List<Category> Get()
+        public Responce<IEnumerable<CategoryModel>> Get()
         {
-            return _rep.GetAll();
+            return _catCommand.GetAll();
         }
 
-        // GET api/<CategoryController>/5
+        // GET api/<GenreController>/<id>
         [HttpGet("{id}")]
-        public Category? Get(int id)
+        public Responce<CategoryModel> Get(int id)
         {
-            return _rep.GetById(id);
+            return _catCommand.GetById(id);
         }
 
-        // POST api/<CategoryController>
+        // POST api/<GenreController>
         [HttpPost]
-        public void Post([FromBody] Category entity)
+        public Responce<int> Post([FromBody] CategoryModel genre)
         {
-            _rep.AddItem(entity);
+            return _catCommand.Create(genre);
         }
 
-        // PUT api/<CategoryController>/5
+        // PUT api/<GenreController>/<id>
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] Category entity)
+        public Responce<int> Put([FromRoute] int id, [FromBody] CategoryModel genre)
         {
-            entity.CategoryId = id;
-
-            _rep.UpdateItem(entity);
+            return _catCommand.Update(id, genre);
         }
 
-        // DELETE api/<CategoryController>/5
+        // DELETE api/<GenreController>/<id>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public Responce<int> Delete(int id)
         {
-            _rep.DeleteById(id);
+            return _catCommand.Delete(id);
         }
     }
 }

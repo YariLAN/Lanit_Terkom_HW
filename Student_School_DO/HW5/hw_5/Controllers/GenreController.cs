@@ -1,6 +1,6 @@
-﻿using EntitiesEF;
+﻿using Commands.Commands.Genre;
 using Microsoft.AspNetCore.Mvc;
-using Repositories;
+using Models;
 
 namespace hw_5.Controllers
 {
@@ -8,49 +8,46 @@ namespace hw_5.Controllers
     [ApiController]
     public class GenreController : ControllerBase
     {
-        private readonly IBaseRepository<Genre, int> _rep;
+        private readonly IGenreCommand _genreCommand;
 
-        public GenreController(IBaseRepository<Genre, int> rep)
+        public GenreController(IGenreCommand genre)
         {
-            _rep = rep;
+            _genreCommand = genre;
         }
 
         // GET: api/<GenreController>
         [HttpGet]
-        public List<Genre> Get()
+        public Responce<IEnumerable<GenreModel>> Get()
         {
-            var genre = _rep.GetAll();
-            return genre;
+            return _genreCommand.GetAll();
         }
 
         // GET api/<GenreController>/<id>
         [HttpGet("{id}")]
-        public Genre? Get(int id)
+        public Responce<GenreModel> Get(int id)
         {
-            return _rep.GetById(id);
+            return _genreCommand.GetById(id);
         }
 
         // POST api/<GenreController>
         [HttpPost]
-        public void Post([FromBody] Genre genre)
+        public Responce<int> Post([FromBody] GenreModel genre)
         {
-            _rep.AddItem(genre);
+            return _genreCommand.Create(genre);
         }
 
         // PUT api/<GenreController>/<id>
         [HttpPut("{id}")]
-        public void Put([FromRoute] int id, [FromBody] Genre genre)
+        public Responce<int> Put([FromRoute] int id, [FromBody] GenreModel genre)
         {
-            genre.GenreId = id;
-
-            _rep.UpdateItem(genre);
+            return _genreCommand.Update(id, genre);
         }
 
         // DELETE api/<GenreController>/<id>
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public Responce<int> Delete(int id)
         {
-            _rep.DeleteById(id);
+            return _genreCommand.Delete(id);
         }
     }
 }
