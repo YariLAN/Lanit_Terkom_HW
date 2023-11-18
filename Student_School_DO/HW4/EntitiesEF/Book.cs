@@ -16,9 +16,9 @@
 
         public int CountBook { get; set; }
 
-        public Genre Genre { get; set; }
+        public Genre Genre { get; set; } = new Genre();
 
-        public ICollection<Issued> Issueds { get; set; }
+        public ICollection<Issued>? Issueds { get; set; } = new List<Issued>();
 
         public Book() { }
 

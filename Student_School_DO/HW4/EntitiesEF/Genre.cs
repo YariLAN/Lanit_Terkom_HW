@@ -2,11 +2,11 @@
 {
     public class Genre : IEntity<Genre>
     {
-        public int GenreId;
+        public int GenreId { get; set; }
 
-        public string Name;
+        public string Name { get; set; }
 
-        public ICollection<Book> Books { get; set; }
+        public ICollection<Book>? Books { get; set; } = new List<Book>();
 
         public Genre() { }
 

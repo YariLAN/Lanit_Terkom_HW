@@ -16,9 +16,9 @@
 
         public string Email { get; set; }
 
-        public Category Category { get; set; }
+        public Category Category { get; set; } = null;
 
-        public ICollection<Issued> Issueds { get; set; }
+        public ICollection<Issued>? Issueds { get; set; } = new List<Issued>();
 
         public Reader() { }
 
