@@ -2,7 +2,7 @@
 
 namespace hw_2
 {
-    internal class ConsoleMenu
+    public class ConsoleMenu
     {
         public static ConsoleColor ForeColorMenu = ConsoleColor.Yellow;
         public static ConsoleColor ForeColorServices = ConsoleColor.Blue;
@@ -35,7 +35,7 @@ namespace hw_2
             Show(color, () => Console.WriteLine(text));
         }
 
-        public async Task DisplayMainMenu()
+        public async virtual Task DisplayMainMenu()
         {
             while (true)
             {
@@ -146,12 +146,15 @@ namespace hw_2
         {
             var listStr = new List<string?>();
 
-            foreach (var line in str)
+            Show(ForeColorServices, () =>
             {
-                Console.Write(line);
+                foreach (var line in str)
+                {
+                    Console.Write(line);
 
-                listStr.Add(Console.ReadLine());
-            }
+                    listStr.Add(Console.ReadLine());
+                }
+            });
 
             return listStr;
         }
