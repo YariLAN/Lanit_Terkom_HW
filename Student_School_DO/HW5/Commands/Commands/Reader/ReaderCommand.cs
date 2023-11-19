@@ -1,6 +1,9 @@
 ﻿using AutoMapper;
+using FluentValidation.Results;
 using Models;
 using Repositories;
+
+using Validation.Reader.Interfaces;
 
 namespace Commands.Commands.Reader
 {
@@ -8,18 +11,29 @@ namespace Commands.Commands.Reader
     {
         private readonly IMapper _mapper;
         private readonly IBaseRepository<EntitiesEF.Reader, Guid> _rep;
+        private readonly ICreateReaderModelValidator _validate;
 
-        public ReaderCommand(IMapper mapper, IBaseRepository<EntitiesEF.Reader, Guid> rep)
+        public ReaderCommand
+            (IMapper mapper,
+            IBaseRepository<EntitiesEF.Reader,
+            Guid> rep, ICreateReaderModelValidator validate)
         {
             _mapper = mapper;
             _rep = rep;
+            _validate = validate;
         }
 
         public Responce<Guid> Create(ReaderModel entity)
         {
-            // валидация
+            ValidationResult validation = _validate.Validate(entity);
+            if (!validation.IsValid)
+            {
+                return new()
+                {
+                    Errors = validation.Errors.Select(e => e.ErrorMessage).ToList()
+                };
+            }
 
-            // маппинг
             var dbReader = _mapper.Map<EntitiesEF.Reader>(entity);
 
             dbReader.ReaderId = Guid.NewGuid();
@@ -67,6 +81,16 @@ namespace Commands.Commands.Reader
 
         public Responce<Guid> Update(Guid id, ReaderModel entity)
         {
+            ValidationResult validation = _validate.Validate(entity);
+            if (!validation.IsValid)
+            {
+                return new()
+                {
+                    Value = id,
+                    Errors = validation.Errors.Select(e => e.ErrorMessage).ToList()
+                };
+            }
+
             entity.ReaderId = id;
 
             var dbReader = _mapper.Map<EntitiesEF.Reader>(entity);

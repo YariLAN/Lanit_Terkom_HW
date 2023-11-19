@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
+using FluentValidation.Results;
 using Models;
 using Repositories;
+using Validation.Category.Interfaces;
 
 namespace Commands.Commands.Category
 {
@@ -8,15 +10,29 @@ namespace Commands.Commands.Category
     {
         private readonly IMapper _mapper;
         private readonly IBaseRepository<EntitiesEF.Category, int> _rep;
+        private readonly ICreateCategoryModelValidator _validate;
 
-        public CategoryCommand(IMapper mapper, IBaseRepository<EntitiesEF.Category, int> rep)
+        public CategoryCommand(
+            IMapper mapper,
+            IBaseRepository<EntitiesEF.Category, int> rep,
+            ICreateCategoryModelValidator validate)
         {
             _mapper = mapper;
             _rep = rep;
+            _validate = validate;
         }
 
         public Responce<int> Create(CategoryModel entity)
         {
+            ValidationResult validation = _validate.Validate(entity);
+            if (!validation.IsValid)
+            {
+                return new()
+                {
+                    Errors = validation.Errors.Select(e => e.ErrorMessage).ToList()
+                };
+            }
+
             var dbReader = _mapper.Map<EntitiesEF.Category>(entity);
 
             _rep.AddItem(dbReader);
@@ -56,6 +72,16 @@ namespace Commands.Commands.Category
 
         public Responce<int> Update(int id, CategoryModel entity)
         {
+            ValidationResult validation = _validate.Validate(entity);
+            if (!validation.IsValid)
+            {
+                return new()
+                {
+                    Value = id,
+                    Errors = validation.Errors.Select(e => e.ErrorMessage).ToList()
+                };
+            }
+
             entity.CategoryId = id;
 
             var dbReader = _mapper.Map<EntitiesEF.Category>(entity);

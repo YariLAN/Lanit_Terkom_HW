@@ -24,14 +24,14 @@ namespace hw_5.Controllers
 
         // GET api/<GenreController>/<id>
         [HttpGet("{id}")]
-        public Responce<GenreModel> Get(int id)
+        public ActionResult<Responce<GenreModel>> Get(int id)
         {
             return _genreCommand.GetById(id);
         }
 
         // POST api/<GenreController>
         [HttpPost]
-        public Responce<int> Post([FromBody] GenreModel genre)
+        public ActionResult<Responce<int>> Post([FromBody] GenreModel genre)
         {
             return _genreCommand.Create(genre);
         }

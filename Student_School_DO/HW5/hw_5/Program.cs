@@ -1,12 +1,22 @@
+using EntitiesEF;
+using Repositories;
+using System.Text.Json.Serialization;
+
 using Commands.Commands.Book;
 using Commands.Commands.Category;
 using Commands.Commands.Genre;
 using Commands.Commands.Issued;
 using Commands.Commands.Reader;
-using EntitiesEF;
-using Models;
-using Repositories;
-using System.Text.Json.Serialization;
+
+using Validation.Book;
+using Validation.Category;
+using Validation.Genre;
+using Validation.Reader;
+
+using Validation.Book.Interfaces;
+using Validation.Genre.Interfaces;
+using Validation.Category.Interfaces;
+using Validation.Reader.Interfaces;
 
 namespace hw_5
 {
@@ -37,20 +47,25 @@ namespace hw_5
             ////////
 
             // Di Commands
-            builder.Services.AddScoped<IReaderCommand, ReaderCommand>();
-            builder.Services.AddScoped<IGenreCommand, GenreCommand>();
-            builder.Services.AddScoped<ICategoryCommand, CategoryCommand>();
-            builder.Services.AddScoped<IIssuedCommand, IssuedCommand>();
-            builder.Services.AddScoped<IBookCommand, BookCommand>();
+            builder.Services.AddTransient<IReaderCommand, ReaderCommand>();
+            builder.Services.AddTransient<IGenreCommand, GenreCommand>();
+            builder.Services.AddTransient<ICategoryCommand, CategoryCommand>();
+            builder.Services.AddTransient<IIssuedCommand, IssuedCommand>();
+            builder.Services.AddTransient<IBookCommand, BookCommand>();
             ////////
 
+            // Di Validators
+            builder.Services.AddTransient<ICreateGenreModelValidator, CreateGenreModelValidator>();
+            builder.Services.AddTransient<ICreateBookModelValidator, CreateBookModelValidator>();
+            builder.Services.AddTransient<ICreateReaderModelValidator, CreateReaderModelValidator>();
+            builder.Services.AddTransient<ICreateCategoryModelValidator, CreateCategoryModelValidator>();
+            ////////
 
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
 
             app.UseAuthorization();
-
 
             app.MapControllers();
 

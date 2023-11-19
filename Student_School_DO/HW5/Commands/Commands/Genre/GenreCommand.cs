@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
-using Azure.Core;
+using FluentValidation.Results;
+
 using Models;
 using Repositories;
+using Validation.Genre.Interfaces;
 
 namespace Commands.Commands.Genre
 {
@@ -9,17 +11,30 @@ namespace Commands.Commands.Genre
     {
         private readonly IMapper _mapper;
         private readonly IBaseRepository<EntitiesEF.Genre, int> _rep;
+        private readonly ICreateGenreModelValidator _validate;
 
-        public GenreCommand(IMapper mapper, IBaseRepository<EntitiesEF.Genre, int> rep)
+        public GenreCommand(
+            IMapper mapper,
+            IBaseRepository<EntitiesEF.Genre, int> rep,
+            ICreateGenreModelValidator validate)
         {
             _mapper = mapper;
             _rep = rep;
+            _validate = validate;
         }
 
         public Responce<int> Create(GenreModel entity)
         {
-            var dbReader = _mapper.Map<EntitiesEF.Genre>(entity);
+            ValidationResult validation = _validate.Validate(entity);
+            if (!validation.IsValid)
+            {
+                return new()
+                {
+                    Errors = validation.Errors.Select(e => e.ErrorMessage).ToList()
+                };
+            }
 
+            var dbReader = _mapper.Map<EntitiesEF.Genre>(entity);
             _rep.AddItem(dbReader);
 
             return new();
@@ -57,6 +72,16 @@ namespace Commands.Commands.Genre
 
         public Responce<int> Update(int id, GenreModel entity)
         {
+            ValidationResult validation = _validate.Validate(entity);
+            if (!validation.IsValid)
+            {
+                return new()
+                {
+                    Value = id,
+                    Errors = validation.Errors.Select(e => e.ErrorMessage).ToList()
+                };
+            }
+
             entity.GenreId = id;
 
             var dbReader = _mapper.Map<EntitiesEF.Genre>(entity);

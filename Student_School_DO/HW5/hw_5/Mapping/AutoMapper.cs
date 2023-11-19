@@ -12,7 +12,6 @@ namespace hw_5.Mapping
             CreateMap<Category, CategoryModel>().ReverseMap();
             CreateMap<Genre, GenreModel>().ReverseMap();
             CreateMap<Book,  BookModel>().ReverseMap();
-
             CreateMap<Issued, IssuedModel>().ReverseMap();
         }
     }
