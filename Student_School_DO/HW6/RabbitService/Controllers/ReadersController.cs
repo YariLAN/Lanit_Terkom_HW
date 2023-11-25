@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Models;
 
-namespace hw_5.Controllers
+namespace RabbitClient.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

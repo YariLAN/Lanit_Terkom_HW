@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageReference Include="AutoMapper" Version="12.0.1" />
     <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.1" />
+    <PackageReference Include="MassTransit.RabbitMQ" Version="8.1.2" />
   </ItemGroup>
 
   <ItemGroup>
@@ -17,6 +18,14 @@
     <ProjectReference Include="..\..\HW4\Repositories\Repositories.csproj" />
     <ProjectReference Include="..\Commands\Commands.csproj" />
     <ProjectReference Include="..\Responce\Models.csproj" />
+    <ProjectReference Include="..\Validation\Validation.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Consumers\Reader\" />
+    <Folder Include="Consumers\Issued\" />
+    <Folder Include="Consumers\Genre\" />
+    <Folder Include="Consumers\Category\" />
   </ItemGroup>
 
 </Project>

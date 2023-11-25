@@ -1,11 +1,9 @@
-﻿using Commands.Commands.Issued;
-using Commands.Commands.Reader;
-using EntitiesEF;
-using Microsoft.AspNetCore.Mvc;
-using Models;
-using Repositories;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace hw_5.Controllers
+using Commands.Commands.Issued;
+using Models;
+
+namespace RabbitClient.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

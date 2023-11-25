@@ -2,7 +2,7 @@
 using EntitiesEF;
 using Models;
 
-namespace hw_5.Mapping
+namespace RabbitServer.Mapping
 {
     public class AutoMapper : Profile
     {

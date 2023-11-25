@@ -1,8 +1,9 @@
-﻿using Commands.Commands.Genre;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
+
+using Commands.Commands.Genre;
 using Models;
 
-namespace hw_5.Controllers
+namespace RabbitClient.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

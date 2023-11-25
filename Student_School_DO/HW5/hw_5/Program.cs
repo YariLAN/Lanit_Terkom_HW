@@ -17,8 +17,9 @@ using Validation.Book.Interfaces;
 using Validation.Genre.Interfaces;
 using Validation.Category.Interfaces;
 using Validation.Reader.Interfaces;
+using MassTransit;
 
-namespace hw_5
+namespace RabbitServer
 {
     public class Program
     {
@@ -47,11 +48,11 @@ namespace hw_5
             ////////
 
             // Di Commands
-            builder.Services.AddTransient<IReaderCommand, ReaderCommand>();
-            builder.Services.AddTransient<IGenreCommand, GenreCommand>();
-            builder.Services.AddTransient<ICategoryCommand, CategoryCommand>();
-            builder.Services.AddTransient<IIssuedCommand, IssuedCommand>();
-            builder.Services.AddTransient<IBookCommand, BookCommand>();
+            builder.Services.AddScoped<IReaderCommand, ReaderCommand>();
+            builder.Services.AddScoped<IGenreCommand, GenreCommand>();
+            builder.Services.AddScoped<ICategoryCommand, CategoryCommand>();
+            builder.Services.AddScoped<IIssuedCommand, IssuedCommand>();
+            builder.Services.AddScoped<IBookCommand, BookCommand>();
             ////////
 
             // Di Validators
@@ -60,6 +61,24 @@ namespace hw_5
             builder.Services.AddTransient<ICreateReaderModelValidator, CreateReaderModelValidator>();
             builder.Services.AddTransient<ICreateCategoryModelValidator, CreateCategoryModelValidator>();
             ////////
+
+            try
+            {
+                builder.Services.AddMassTransit(x =>
+                {
+                    x.AddConsumers(typeof(Program).Assembly);
+
+                    x.UsingRabbitMq((context, cfg) =>
+                    {
+                        cfg.Host("localhost");
+                        cfg.ConfigureEndpoints(context);
+                    });
+                });
+            }
+            catch (Exception)
+            {
+                throw new Exception("Failed to connect to RabbitMQ");
+            }
 
             var app = builder.Build();
 
