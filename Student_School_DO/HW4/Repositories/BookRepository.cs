@@ -33,8 +33,9 @@ namespace Repositories
 
         public Book? GetById(Guid id)
         {
-            return _db.Books
-
+            return _db.Books.AsNoTracking()
+                            .Include(b => b.Genre)
+                            .Include(b => b.Issueds)
                             .FirstOrDefault(b => b.BookId == id);
         }
 
