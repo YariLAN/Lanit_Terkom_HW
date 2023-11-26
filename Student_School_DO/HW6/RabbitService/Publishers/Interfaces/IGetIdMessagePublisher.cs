@@ -1,4 +1,4 @@
-﻿namespace RabbitClient.Publishers
+﻿namespace RabbitClient.Publishers.Interfaces
 {
     public interface IGetByIdMessagePublisher<id, Responce>
     {

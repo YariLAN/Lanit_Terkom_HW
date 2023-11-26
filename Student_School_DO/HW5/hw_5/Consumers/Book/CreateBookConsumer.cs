@@ -1,11 +1,12 @@
 ﻿using Commands.Commands.Book;
 using MassTransit;
 using Models;
+using Models.Request.Book;
 using Models.Responce.Book;
 
 namespace RabbitServer.Consumers.Book
 {
-    public class CreateBookConsumer : IConsumer<BookModel>
+    public class CreateBookConsumer : IConsumer<CreateBookRequest>
     {
         private readonly IBookCommand _command;
 
@@ -14,9 +15,9 @@ namespace RabbitServer.Consumers.Book
             _command = command;
         }
 
-        public Task Consume(ConsumeContext<BookModel> context)
+        public async Task Consume(ConsumeContext<CreateBookRequest> context)
         {
-            Responce<Guid> id = _command.Create(context.Message);
+            Responce<Guid> id = _command.Create(context.Message.Book);
 
             CreateBookResponce responce = new CreateBookResponce
             {
@@ -24,9 +25,7 @@ namespace RabbitServer.Consumers.Book
                 Error = id.Errors?.Count > 0 ? id.Errors[0] : ""
             };
 
-            context.Respond(responce);
-
-            return Task.CompletedTask;
+            await context.RespondAsync(responce);
         }
     }
 }

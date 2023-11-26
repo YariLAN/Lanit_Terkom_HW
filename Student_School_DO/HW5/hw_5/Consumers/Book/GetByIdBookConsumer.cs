@@ -2,6 +2,7 @@
 using MassTransit;
 using Models;
 using Models.Request.Book;
+using Models.Responce.Book;
 
 namespace RabbitServer.Consumers.Book
 {
@@ -14,13 +15,13 @@ namespace RabbitServer.Consumers.Book
             _command = command;
         }
 
-        public Task Consume(ConsumeContext<GetByIdBookRequest> context)
+        public async Task Consume(ConsumeContext<GetByIdBookRequest> context)
         {
-            BookModel responce = _command.GetById(context.Message.Id).Value;
+            Responce<BookModel> book = _command.GetById(context.Message.Id);
 
-            context.Respond(responce);
+            GetByIdBookResponce responce = new GetByIdBookResponce { Book = book.Value };
 
-            return Task.CompletedTask;
+            await context.RespondAsync(responce);
         }
     }
 }

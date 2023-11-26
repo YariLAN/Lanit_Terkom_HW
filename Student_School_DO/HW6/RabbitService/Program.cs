@@ -1,6 +1,9 @@
 using MassTransit;
-
+using Models;
+using Models.Request.Book;
+using Models.Responce.Book;
 using RabbitClient.Publishers.Books;
+using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient
 {
@@ -14,7 +17,11 @@ namespace RabbitClient
 
             builder.Services.AddControllers();
 
-            builder.Services.AddScoped<IBookPublisher, BookPublisher>();
+            builder.Services.AddTransient<ICreateMessagePublisher<CreateBookRequest, CreateBookResponce>,CreateBookPublisher>();
+            builder.Services.AddTransient<IGetByIdMessagePublisher<Guid, Task<GetByIdBookResponce>>, GetByIdBookPublisher>();
+            builder.Services.AddTransient<IDeleteMessagePublisher<DeleteBookRequest, DeleteBookResponce>, DeleteBookPublisher>();
+            builder.Services.AddTransient<IGetAllMessagePublisher<GetAllBookResponce, BookModel>, GetAllBookPublisher>();
+            builder.Services.AddTransient<IUpdateMessagePublisher<Guid, BookModel, UpdateBookResponce>, UpdateBookPublisher>();
 
             try
             {

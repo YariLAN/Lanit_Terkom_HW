@@ -2,7 +2,9 @@
 
 using Models;
 using Models.Request.Book;
+using Models.Responce.Book;
 using RabbitClient.Publishers.Books;
+using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Controllers
 {
@@ -10,13 +12,13 @@ namespace RabbitClient.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        // POST api/<ReaderController>
+        //POST api/<ReaderController>
         [HttpPost]
-        public IActionResult Post(
-            [FromServices] IBookPublisher msgPublisher,
+        public async Task<IActionResult> Post(
+            [FromServices] ICreateMessagePublisher<CreateBookRequest, CreateBookResponce> msgPublisher,
             [FromBody] BookModel request)
         {
-            var resp = msgPublisher.SendCreateMessage(request);
+            var resp = msgPublisher.SendCreateMessage(new CreateBookRequest { Book = request });
 
             if (resp == null)
             {
@@ -27,7 +29,8 @@ namespace RabbitClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll([FromServices] IBookPublisher msgPublisher)
+        public IActionResult GetAll(
+            [FromServices] IGetAllMessagePublisher<GetAllBookResponce, BookModel> msgPublisher)
         {
             var resp = msgPublisher.SendGetAllMessage(new BookModel());
 
@@ -36,12 +39,12 @@ namespace RabbitClient.Controllers
                 return BadRequest();
             }
 
-            return Created("/books", resp);
+            return Created("/books", resp.Books);
         }
 
         [HttpDelete("{id}")]
         public IActionResult Delete(
-            [FromServices] IBookPublisher msgPublisher,
+            [FromServices] IDeleteMessagePublisher<DeleteBookRequest, DeleteBookResponce> msgPublisher,
             [FromRoute] Guid id)
         {
             DeleteBookRequest request = new DeleteBookRequest { Id = id };
@@ -57,22 +60,23 @@ namespace RabbitClient.Controllers
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetById(
-            [FromServices] IBookPublisher msgPublisher, Guid id)
+        public async Task<IActionResult> GetById(
+            [FromServices] IGetByIdMessagePublisher<Guid, Task<GetByIdBookResponce>> msgPublisher,
+            [FromRoute] Guid id)
         {
-            var resp = msgPublisher.SendGetByIdMessage(id);
+            var resp = await msgPublisher.SendGetByIdMessage(id);
 
             if (resp == null)
             {
                 return BadRequest();
             }
 
-            return Created($"/books/{resp.BookId}", resp);
+            return Created($"/books/{resp.Book.BookId}", resp);
         }
 
         [HttpPut("{id}")]
         public IActionResult Update(
-            [FromServices] IBookPublisher msgPublisher,
+            [FromServices] IUpdateMessagePublisher<Guid, BookModel, UpdateBookResponce> msgPublisher,
             [FromRoute] Guid id,
             [FromBody] BookModel request)
         {

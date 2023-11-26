@@ -23,7 +23,7 @@ namespace RabbitServer.Consumers.Book
             DeleteBookResponce responce = new DeleteBookResponce
             {
                 Id = result.Value,
-                Error = result.Errors[0]
+                Error = result.Errors?.Count > 0 ? result.Errors[0] : ""
             };
 
             context.Respond(responce);

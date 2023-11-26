@@ -1,11 +1,12 @@
 ﻿using Commands.Commands.Book;
 using MassTransit;
 using Models;
+using Models.Request.Book;
 using Models.Responce.Book;
 
 namespace RabbitServer.Consumers.Book
 {
-    public class UpdateBookConsumer : IConsumer<BookModel>
+    public class UpdateBookConsumer : IConsumer<UpdateBookRequest>
     {
         private readonly IBookCommand _command;
 
@@ -14,9 +15,9 @@ namespace RabbitServer.Consumers.Book
             _command = command;
         }
 
-        public Task Consume(ConsumeContext<BookModel> context)
+        public Task Consume(ConsumeContext<UpdateBookRequest> context)
         {
-            Responce<Guid> id = _command.Update(context.Message.BookId, context.Message);
+            Responce<Guid> id = _command.Update(context.Message.Book.BookId, context.Message.Book);
 
             UpdateBookResponce responce = new UpdateBookResponce
             {
