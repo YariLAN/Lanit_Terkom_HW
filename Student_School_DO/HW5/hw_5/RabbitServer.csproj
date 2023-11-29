@@ -22,10 +22,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Consumers\Category\" />
     <Folder Include="Consumers\Reader\" />
     <Folder Include="Consumers\Issued\" />
     <Folder Include="Consumers\Genre\" />
-    <Folder Include="Consumers\Category\" />
   </ItemGroup>
 
 </Project>

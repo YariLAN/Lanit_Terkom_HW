@@ -20,7 +20,7 @@ namespace RabbitClient.Controllers
         {
             var resp = msgPublisher.SendCreateMessage(new CreateBookRequest { Book = request });
 
-            if (resp == null)
+            if (resp is null)
             {
                 return BadRequest();
             }
@@ -34,12 +34,12 @@ namespace RabbitClient.Controllers
         {
             var resp = msgPublisher.SendGetAllMessage(new BookModel());
 
-            if (resp == null)
+            if (resp is null)
             {
                 return BadRequest();
             }
 
-            return Created("/books", resp.Books);
+            return StatusCode(200, resp.Books);
         }
 
         [HttpDelete("{id}")]
@@ -51,7 +51,7 @@ namespace RabbitClient.Controllers
 
             var resp = msgPublisher.SendDeleteMessage(request);
 
-            if (resp == null)
+            if (resp is null)
             {
                 return BadRequest();
             }
@@ -66,12 +66,12 @@ namespace RabbitClient.Controllers
         {
             var resp = await msgPublisher.SendGetByIdMessage(id);
 
-            if (resp == null)
+            if (resp is null)
             {
                 return BadRequest();
             }
 
-            return Created($"/books/{resp.Book.BookId}", resp);
+            return StatusCode(200, resp.Book);
         }
 
         [HttpPut("{id}")]
@@ -82,12 +82,12 @@ namespace RabbitClient.Controllers
         {
             var resp = msgPublisher.SendUpdateMessage(id, request);
 
-            if (resp == null)
+            if (resp is null)
             {
                 return BadRequest();
             }
 
-            return Created($"/books/{resp.Id}", resp);
+            return StatusCode(200, resp);
         }
     }
 }

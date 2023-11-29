@@ -21,7 +21,7 @@ namespace RabbitServer.Consumers.Book
 
             GetByIdBookResponce responce = new GetByIdBookResponce { Book = book.Value };
 
-            await context.RespondAsync(responce);
+            await context.RespondAsync((object)responce);
         }
     }
 }

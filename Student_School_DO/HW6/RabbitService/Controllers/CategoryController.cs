@@ -2,6 +2,10 @@
 
 using Commands.Commands.Category;
 using Models;
+using Models.Request.Book;
+using Models.Responce.Book;
+using RabbitClient.Publishers.Interfaces;
+using Models.Response.Category;
 
 namespace RabbitClient.Controllers
 {
@@ -9,46 +13,82 @@ namespace RabbitClient.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        private readonly ICategoryCommand _catCommand;
 
-        public CategoryController(ICategoryCommand category)
-        {
-            _catCommand = category;
-        }
-
-        // GET: api/<GenreController>
-        [HttpGet]
-        public Responce<IEnumerable<CategoryModel>> Get()
-        {
-            return _catCommand.GetAll();
-        }
-
-        // GET api/<GenreController>/<id>
-        [HttpGet("{id}")]
-        public Responce<CategoryModel> Get(int id)
-        {
-            return _catCommand.GetById(id);
-        }
-
-        // POST api/<GenreController>
         [HttpPost]
-        public Responce<int> Post([FromBody] CategoryModel genre)
+        public async Task<IActionResult> Post(
+            [FromServices] ICreateMessagePublisher<CreateCategoryResponse, CreateBookResponce> msgPublisher,
+            [FromBody] BookModel request)
         {
-            return _catCommand.Create(genre);
+            var resp = msgPublisher.SendCreateMessage(new CreateCategoryResponse { Category = request });
+
+            if (resp is null)
+            {
+                return BadRequest();
+            }
+
+            return Created("/books", resp);
         }
 
-        // PUT api/<GenreController>/<id>
-        [HttpPut("{id}")]
-        public Responce<int> Put([FromRoute] int id, [FromBody] CategoryModel genre)
+        [HttpGet]
+        public IActionResult GetAll(
+            [FromServices] IGetAllMessagePublisher<GetAllBookResponce, BookModel> msgPublisher)
         {
-            return _catCommand.Update(id, genre);
+            var resp = msgPublisher.SendGetAllMessage(new BookModel());
+
+            if (resp is null)
+            {
+                return BadRequest();
+            }
+
+            return StatusCode(200, resp.Books);
         }
 
-        // DELETE api/<GenreController>/<id>
         [HttpDelete("{id}")]
-        public Responce<int> Delete(int id)
+        public IActionResult Delete(
+            [FromServices] IDeleteMessagePublisher<DeleteBookRequest, DeleteBookResponce> msgPublisher,
+            [FromRoute] Guid id)
         {
-            return _catCommand.Delete(id);
+            DeleteBookRequest request = new DeleteBookRequest { Id = id };
+
+            var resp = msgPublisher.SendDeleteMessage(request);
+
+            if (resp is null)
+            {
+                return BadRequest();
+            }
+
+            return Created($"/books/{resp.Id}", resp);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(
+            [FromServices] IGetByIdMessagePublisher<Guid, Task<GetByIdBookResponce>> msgPublisher,
+            [FromRoute] Guid id)
+        {
+            var resp = await msgPublisher.SendGetByIdMessage(id);
+
+            if (resp is null)
+            {
+                return BadRequest();
+            }
+
+            return StatusCode(200, resp.Book);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult Update(
+            [FromServices] IUpdateMessagePublisher<Guid, BookModel, UpdateBookResponce> msgPublisher,
+            [FromRoute] Guid id,
+            [FromBody] BookModel request)
+        {
+            var resp = msgPublisher.SendUpdateMessage(id, request);
+
+            if (resp is null)
+            {
+                return BadRequest();
+            }
+
+            return StatusCode(200, resp);
         }
     }
 }
