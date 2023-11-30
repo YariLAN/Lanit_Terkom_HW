@@ -5,7 +5,7 @@ using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Publishers.Books
 {
-    public class DeleteBookPublisher : IDeleteMessagePublisher<DeleteBookRequest, DeleteBookResponce>
+    public class DeleteBookPublisher : IDeleteMessagePublisher<DeleteBookRequest, DeleteBookResponse>
     {
         private readonly IRequestClient<DeleteBookRequest> _requestClient;
 
@@ -14,9 +14,9 @@ namespace RabbitClient.Publishers.Books
             _requestClient = requestClient;
         }
 
-        public DeleteBookResponce SendDeleteMessage(DeleteBookRequest id)
+        public DeleteBookResponse SendDeleteMessage(DeleteBookRequest id)
         {
-            Response<DeleteBookResponce> result = _requestClient.GetResponse<DeleteBookResponce>(id).Result;
+            Response<DeleteBookResponse> result = _requestClient.GetResponse<DeleteBookResponse>(id).Result;
 
             return result.Message;
         }

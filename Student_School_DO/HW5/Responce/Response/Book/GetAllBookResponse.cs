@@ -1,7 +1,7 @@
 ﻿
 namespace Models.Responce.Book
 {
-    public class GetAllBookResponce
+    public class GetAllBookResponse
     {
         public IEnumerable<BookModel> Books { get; set; }
     }

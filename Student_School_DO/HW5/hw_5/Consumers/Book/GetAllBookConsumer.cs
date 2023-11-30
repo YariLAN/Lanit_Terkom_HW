@@ -18,7 +18,7 @@ namespace RabbitServer.Consumers.Book
         {
             IEnumerable<BookModel> result = _command.GetAll().Value;
 
-            var allBook = new GetAllBookResponce { Books = result };
+            var allBook = new GetAllBookResponse { Books = result };
 
             context.Respond(allBook);
 

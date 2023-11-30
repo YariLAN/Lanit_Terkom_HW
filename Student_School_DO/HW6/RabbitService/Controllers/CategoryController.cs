@@ -13,10 +13,9 @@ namespace RabbitClient.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-
         [HttpPost]
         public async Task<IActionResult> Post(
-            [FromServices] ICreateMessagePublisher<CreateCategoryResponse, CreateBookResponce> msgPublisher,
+            [FromServices] ICreateMessagePublisher<Create, CreateBookResponse> msgPublisher,
             [FromBody] BookModel request)
         {
             var resp = msgPublisher.SendCreateMessage(new CreateCategoryResponse { Category = request });
@@ -31,7 +30,7 @@ namespace RabbitClient.Controllers
 
         [HttpGet]
         public IActionResult GetAll(
-            [FromServices] IGetAllMessagePublisher<GetAllBookResponce, BookModel> msgPublisher)
+            [FromServices] IGetAllMessagePublisher<GetAllBookResponse, BookModel> msgPublisher)
         {
             var resp = msgPublisher.SendGetAllMessage(new BookModel());
 
@@ -45,7 +44,7 @@ namespace RabbitClient.Controllers
 
         [HttpDelete("{id}")]
         public IActionResult Delete(
-            [FromServices] IDeleteMessagePublisher<DeleteBookRequest, DeleteBookResponce> msgPublisher,
+            [FromServices] IDeleteMessagePublisher<DeleteBookRequest, DeleteBookResponse> msgPublisher,
             [FromRoute] Guid id)
         {
             DeleteBookRequest request = new DeleteBookRequest { Id = id };
@@ -62,7 +61,7 @@ namespace RabbitClient.Controllers
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(
-            [FromServices] IGetByIdMessagePublisher<Guid, Task<GetByIdBookResponce>> msgPublisher,
+            [FromServices] IGetByIdMessagePublisher<Guid, Task<GetByIdBookResponse>> msgPublisher,
             [FromRoute] Guid id)
         {
             var resp = await msgPublisher.SendGetByIdMessage(id);
@@ -77,7 +76,7 @@ namespace RabbitClient.Controllers
 
         [HttpPut("{id}")]
         public IActionResult Update(
-            [FromServices] IUpdateMessagePublisher<Guid, BookModel, UpdateBookResponce> msgPublisher,
+            [FromServices] IUpdateMessagePublisher<Guid, BookModel, UpdateBookResponse> msgPublisher,
             [FromRoute] Guid id,
             [FromBody] BookModel request)
         {

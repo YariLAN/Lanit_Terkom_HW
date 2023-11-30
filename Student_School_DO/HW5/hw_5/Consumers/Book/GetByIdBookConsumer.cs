@@ -19,7 +19,7 @@ namespace RabbitServer.Consumers.Book
         {
             Responce<BookModel> book = _command.GetById(context.Message.Id);
 
-            GetByIdBookResponce responce = new GetByIdBookResponce { Book = book.Value };
+            GetByIdBookResponse responce = new GetByIdBookResponse { Book = book.Value };
 
             await context.RespondAsync((object)responce);
         }

@@ -6,7 +6,7 @@ using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Publishers.Books
 {
-    public class UpdateBookPublisher : IUpdateMessagePublisher<Guid, BookModel, UpdateBookResponce>
+    public class UpdateBookPublisher : IUpdateMessagePublisher<Guid, BookModel, UpdateBookResponse>
     {
         private readonly IRequestClient<UpdateBookRequest> _requestClient;
 
@@ -15,14 +15,14 @@ namespace RabbitClient.Publishers.Books
             _requestClient = requestClient;
         }
 
-        public UpdateBookResponce SendUpdateMessage(Guid id, BookModel request)
+        public UpdateBookResponse SendUpdateMessage(Guid id, BookModel request)
         {
             request.BookId = id;
 
             UpdateBookRequest req = new UpdateBookRequest { Book = request };
 
-            Response<UpdateBookResponce> result =
-                _requestClient.GetResponse<UpdateBookResponce>(req).Result;
+            Response<UpdateBookResponse> result =
+                _requestClient.GetResponse<UpdateBookResponse>(req).Result;
 
             return result.Message;
         }

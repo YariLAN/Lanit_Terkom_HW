@@ -5,7 +5,7 @@ using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Publishers.Books
 {
-    public class CreateBookPublisher : ICreateMessagePublisher<CreateBookRequest, CreateBookResponce>
+    public class CreateBookPublisher : ICreateMessagePublisher<CreateBookRequest, CreateBookResponse>
     {
         private readonly IRequestClient<CreateBookRequest> _requestClient;
 
@@ -14,9 +14,9 @@ namespace RabbitClient.Publishers.Books
             _requestClient = requestClient;
         }
 
-        public CreateBookResponce SendCreateMessage(CreateBookRequest request)
+        public CreateBookResponse SendCreateMessage(CreateBookRequest request)
         {
-            Response<CreateBookResponce> result = _requestClient.GetResponse<CreateBookResponce>(request).Result;
+            Response<CreateBookResponse> result = _requestClient.GetResponse<CreateBookResponse>(request).Result;
 
             return result.Message;
         }

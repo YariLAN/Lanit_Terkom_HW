@@ -1,9 +1,9 @@
 ﻿namespace Models.Responce.Book
 {
-    public class CreateBookResponce
+    public class DeleteBookResponse
     {
         public Guid Id { get; set; }
 
-        public string? Error { get; set; }
+        public string Error { get; set; }
     }
 }

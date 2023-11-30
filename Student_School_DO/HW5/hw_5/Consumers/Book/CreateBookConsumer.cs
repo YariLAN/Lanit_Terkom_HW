@@ -19,7 +19,7 @@ namespace RabbitServer.Consumers.Book
         {
             Responce<Guid> id = _command.Create(context.Message.Book);
 
-            CreateBookResponce responce = new CreateBookResponce
+            CreateBookResponse responce = new CreateBookResponse
             {
                 Id = id.Value,
                 Error = id.Errors?.Count > 0 ? id.Errors[0] : ""

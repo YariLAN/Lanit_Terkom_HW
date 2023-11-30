@@ -1,6 +1,6 @@
 ﻿namespace Models.Responce.Book
 {
-    public class GetByIdBookResponce
+    public class GetByIdBookResponse
     {
         public BookModel Book { get; set; }
     }

@@ -19,7 +19,7 @@ namespace RabbitServer.Consumers.Book
         {
             Responce<Guid> id = _command.Update(context.Message.Book.BookId, context.Message.Book);
 
-            UpdateBookResponce responce = new UpdateBookResponce
+            UpdateBookResponse responce = new UpdateBookResponse
             {
                 Id = id.Value
             };

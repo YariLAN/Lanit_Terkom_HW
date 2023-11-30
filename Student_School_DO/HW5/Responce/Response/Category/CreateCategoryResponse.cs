@@ -2,7 +2,7 @@
 {
     public class CreateCategoryResponse
     {
-        public CategoryModel Category { get; set; }
+        public int Id { get; set; }
 
         public string? Error { get; set; }
     }

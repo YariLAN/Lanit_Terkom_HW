@@ -20,7 +20,7 @@ namespace RabbitServer.Consumers.Book
         {
             Responce<Guid> result = _command.Delete(context.Message.Id);
 
-            DeleteBookResponce responce = new DeleteBookResponce
+            DeleteBookResponse responce = new DeleteBookResponse
             {
                 Id = result.Value,
                 Error = result.Errors?.Count > 0 ? result.Errors[0] : ""

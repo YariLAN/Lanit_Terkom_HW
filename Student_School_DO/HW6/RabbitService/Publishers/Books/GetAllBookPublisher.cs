@@ -6,7 +6,7 @@ using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Publishers.Books
 {
-    public class GetAllBookPublisher : IGetAllMessagePublisher<GetAllBookResponce, BookModel>
+    public class GetAllBookPublisher : IGetAllMessagePublisher<GetAllBookResponse, BookModel>
     {
         private readonly IRequestClient<BookModel> _requestClient;
 
@@ -15,9 +15,9 @@ namespace RabbitClient.Publishers.Books
             _requestClient = requestClient;
         }
 
-        public GetAllBookResponce SendGetAllMessage(BookModel request)
+        public GetAllBookResponse SendGetAllMessage(BookModel request)
         {
-            Response<GetAllBookResponce> result = _requestClient.GetResponse<GetAllBookResponce>(request).Result;
+            Response<GetAllBookResponse> result = _requestClient.GetResponse<GetAllBookResponse>(request).Result;
 
             return result.Message;
         }

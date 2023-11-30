@@ -17,11 +17,11 @@ namespace RabbitClient
 
             builder.Services.AddControllers();
 
-            builder.Services.AddTransient<ICreateMessagePublisher<CreateBookRequest, CreateBookResponce>,CreateBookPublisher>();
-            builder.Services.AddTransient<IGetByIdMessagePublisher<Guid, Task<GetByIdBookResponce>>, GetByIdBookPublisher>();
-            builder.Services.AddTransient<IDeleteMessagePublisher<DeleteBookRequest, DeleteBookResponce>, DeleteBookPublisher>();
-            builder.Services.AddTransient<IGetAllMessagePublisher<GetAllBookResponce, BookModel>, GetAllBookPublisher>();
-            builder.Services.AddTransient<IUpdateMessagePublisher<Guid, BookModel, UpdateBookResponce>, UpdateBookPublisher>();
+            builder.Services.AddTransient<ICreateMessagePublisher<CreateBookRequest, CreateBookResponse>,CreateBookPublisher>();
+            builder.Services.AddTransient<IGetByIdMessagePublisher<Guid, Task<GetByIdBookResponse>>, GetByIdBookPublisher>();
+            builder.Services.AddTransient<IDeleteMessagePublisher<DeleteBookRequest, DeleteBookResponse>, DeleteBookPublisher>();
+            builder.Services.AddTransient<IGetAllMessagePublisher<GetAllBookResponse, BookModel>, GetAllBookPublisher>();
+            builder.Services.AddTransient<IUpdateMessagePublisher<Guid, BookModel, UpdateBookResponse>, UpdateBookPublisher>();
 
             try
             {

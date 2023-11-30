@@ -1,6 +1,6 @@
 ﻿namespace Models.Responce.Book
 {
-    public class UpdateBookResponce
+    public class UpdateBookResponse
     {
         public Guid Id { get; set; }
 
