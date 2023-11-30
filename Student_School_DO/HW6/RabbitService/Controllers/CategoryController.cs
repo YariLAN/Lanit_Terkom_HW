@@ -6,6 +6,7 @@ using Models.Request.Book;
 using Models.Responce.Book;
 using RabbitClient.Publishers.Interfaces;
 using Models.Response.Category;
+using Models.Request.Category;
 
 namespace RabbitClient.Controllers
 {
@@ -15,17 +16,17 @@ namespace RabbitClient.Controllers
     {
         [HttpPost]
         public async Task<IActionResult> Post(
-            [FromServices] ICreateMessagePublisher<Create, CreateBookResponse> msgPublisher,
-            [FromBody] BookModel request)
+            [FromServices] ICreateMessagePublisher<CreateCategoryRequest, CreateCategoryResponse> msgPublisher,
+            [FromBody] CategoryModel request)
         {
-            var resp = msgPublisher.SendCreateMessage(new CreateCategoryResponse { Category = request });
+            var resp = msgPublisher.SendCreateMessage(new CreateCategoryRequest { Category = request });
 
             if (resp is null)
             {
                 return BadRequest();
             }
 
-            return Created("/books", resp);
+            return Created("/category", resp);
         }
 
         [HttpGet]
