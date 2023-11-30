@@ -1,6 +1,8 @@
-﻿using Commands.Commands.Reader;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Models;
+using Models.Request.Reader;
+using Models.Response.Reader;
+using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Controllers
 {
@@ -8,46 +10,80 @@ namespace RabbitClient.Controllers
     [ApiController]
     public class ReadersController : ControllerBase
     {
-        private readonly IReaderCommand _readerCommand;
-
-        public ReadersController(IReaderCommand reader)
-        {
-            _readerCommand = reader;
-        }
-
-        // GET: api/<ReaderController>
-        [HttpGet]
-        public Responce<IEnumerable<ReaderModel>> Get()
-        {
-            return _readerCommand.GetAll();
-        }
-
-        // GET api/<ReaderController>/5
-        [HttpGet("{id}")]
-        public Responce<ReaderModel> Get(Guid id)
-        {
-            return _readerCommand.GetById(id);
-        }
-
-        // POST api/<ReaderController>
+        //POST api/<ReaderController>
         [HttpPost]
-        public Responce<Guid> Post([FromBody] ReaderModel entity)
+        public async Task<IActionResult> Post(
+            [FromServices] ICreateMessagePublisher<CreateReaderRequest, Task<CreateReaderResponse>> msgPublisher,
+            [FromBody] ReaderModel request)
         {
-            return _readerCommand.Create(entity);
+            var resp = await msgPublisher.SendCreateMessage(new CreateReaderRequest { Reader = request });
+
+            if (resp is null)
+            {
+                return BadRequest();
+            }
+
+            return Created("/readers", resp);
         }
 
-        // PUT api/<ReaderController>/5
-        [HttpPut("{id}")]
-        public Responce<Guid> Put(Guid id, [FromBody] ReaderModel entity)
+        [HttpGet]
+        public async Task<IActionResult> GetAll(
+            [FromServices] IGetAllMessagePublisher<Task<GetAllReaderResponse>, ReaderModel> msgPublisher)
         {
-            return _readerCommand.Update(id, entity);
+            var resp = await msgPublisher.SendGetAllMessage(new ReaderModel());
+
+            if (resp is null)
+            {
+                return BadRequest();
+            }
+
+            return StatusCode(200, resp.Readers);
         }
 
-        // DELETE api/<ReaderController>/5
         [HttpDelete("{id}")]
-        public Responce<Guid> Delete(Guid id)
+        public async Task<IActionResult> Delete(
+            [FromServices] IDeleteMessagePublisher<Guid, Task<DeleteReaderResponse>> msgPublisher,
+            [FromRoute] Guid id)
         {
-            return _readerCommand.Delete(id);
+            var resp = await msgPublisher.SendDeleteMessage(id);
+
+            if (resp is null)
+            {
+                return BadRequest();
+            }
+
+            return Created($"/readers/{resp.Id}", resp);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(
+            [FromServices] IGetByIdMessagePublisher<Guid, Task<GetByIdReaderResponse>> msgPublisher,
+            [FromRoute] Guid id)
+        {
+            var resp = await msgPublisher.SendGetByIdMessage(id);
+
+            if (resp is null)
+            {
+                return BadRequest();
+            }
+
+            return StatusCode(200, resp.Reader);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Update(
+            [FromServices] IUpdateMessagePublisher<Guid, ReaderModel, Task<UpdateReaderResponse>> msgPublisher,
+            [FromRoute] Guid id,
+            [FromBody] ReaderModel request)
+        {
+            var resp = await msgPublisher.SendUpdateMessage(id, request);
+
+            if (resp is null)
+            {
+                return BadRequest();
+            }
+
+            return StatusCode(200, resp);
         }
     }
 }

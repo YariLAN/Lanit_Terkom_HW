@@ -3,7 +3,6 @@
 using Models;
 using Models.Request.Book;
 using Models.Responce.Book;
-using RabbitClient.Publishers.Books;
 using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Controllers
@@ -12,7 +11,6 @@ namespace RabbitClient.Controllers
     [ApiController]
     public class BooksController : ControllerBase
     {
-        //POST api/<ReaderController>
         [HttpPost]
         public async Task<IActionResult> Post(
             [FromServices] ICreateMessagePublisher<CreateBookRequest, CreateBookResponse> msgPublisher,
@@ -29,10 +27,10 @@ namespace RabbitClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll(
-            [FromServices] IGetAllMessagePublisher<GetAllBookResponse, BookModel> msgPublisher)
+        public async Task<IActionResult> GetAll(
+            [FromServices] IGetAllMessagePublisher<Task<GetAllBookResponse>, BookModel> msgPublisher)
         {
-            var resp = msgPublisher.SendGetAllMessage(new BookModel());
+            var resp = await msgPublisher.SendGetAllMessage(new BookModel());
 
             if (resp is null)
             {
@@ -43,13 +41,11 @@ namespace RabbitClient.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(
-            [FromServices] IDeleteMessagePublisher<DeleteBookRequest, DeleteBookResponse> msgPublisher,
+        public async Task<IActionResult> Delete(
+            [FromServices] IDeleteMessagePublisher<Guid, Task<DeleteBookResponse>> msgPublisher,
             [FromRoute] Guid id)
         {
-            DeleteBookRequest request = new DeleteBookRequest { Id = id };
-
-            var resp = msgPublisher.SendDeleteMessage(request);
+            var resp = await msgPublisher.SendDeleteMessage(id);
 
             if (resp is null)
             {
@@ -75,12 +71,12 @@ namespace RabbitClient.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(
-            [FromServices] IUpdateMessagePublisher<Guid, BookModel, UpdateBookResponse> msgPublisher,
+        public async Task<IActionResult> Update(
+            [FromServices] IUpdateMessagePublisher<Guid, BookModel, Task<UpdateBookResponse>> msgPublisher,
             [FromRoute] Guid id,
             [FromBody] BookModel request)
         {
-            var resp = msgPublisher.SendUpdateMessage(id, request);
+            var resp = await msgPublisher.SendUpdateMessage(id, request);
 
             if (resp is null)
             {

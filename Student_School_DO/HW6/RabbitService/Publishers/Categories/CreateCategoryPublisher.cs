@@ -5,7 +5,7 @@ using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Publishers.Categories
 {
-    public class CreateCategoryPublisher : ICreateMessagePublisher<CreateCategoryRequest, CreateCategoryResponse>
+    public class CreateCategoryPublisher : ICreateMessagePublisher<CreateCategoryRequest, Task<CreateCategoryResponse>>
     {
         private readonly IRequestClient<CreateCategoryRequest> _requestClient;
 
@@ -14,9 +14,10 @@ namespace RabbitClient.Publishers.Categories
             _requestClient = requestClient;
         }
 
-        public CreateCategoryResponse SendCreateMessage(CreateCategoryRequest request)
+        public async Task<CreateCategoryResponse> SendCreateMessage(CreateCategoryRequest request)
         {
-            Response<CreateCategoryResponse> result = _requestClient.GetResponse<CreateCategoryResponse>(request).Result;
+            Response<CreateCategoryResponse> result =
+                await  _requestClient.GetResponse<CreateCategoryResponse>(request);
 
             return result.Message;
         }

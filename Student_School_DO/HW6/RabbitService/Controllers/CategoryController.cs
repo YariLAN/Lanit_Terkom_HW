@@ -16,10 +16,10 @@ namespace RabbitClient.Controllers
     {
         [HttpPost]
         public async Task<IActionResult> Post(
-            [FromServices] ICreateMessagePublisher<CreateCategoryRequest, CreateCategoryResponse> msgPublisher,
+            [FromServices] ICreateMessagePublisher<CreateCategoryRequest, Task<CreateCategoryResponse>> msgPublisher,
             [FromBody] CategoryModel request)
         {
-            var resp = msgPublisher.SendCreateMessage(new CreateCategoryRequest { Category = request });
+            var resp = await msgPublisher.SendCreateMessage(new CreateCategoryRequest { Category = request });
 
             if (resp is null)
             {
@@ -30,40 +30,38 @@ namespace RabbitClient.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll(
-            [FromServices] IGetAllMessagePublisher<GetAllBookResponse, BookModel> msgPublisher)
+        public async Task<IActionResult> GetAll(
+            [FromServices] IGetAllMessagePublisher<Task<GetAllCategoryResponse>, CategoryModel> msgPublisher)
         {
-            var resp = msgPublisher.SendGetAllMessage(new BookModel());
+            var resp = await msgPublisher.SendGetAllMessage(new CategoryModel());
 
             if (resp is null)
             {
                 return BadRequest();
             }
 
-            return StatusCode(200, resp.Books);
+            return StatusCode(200, resp.Categories);
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(
-            [FromServices] IDeleteMessagePublisher<DeleteBookRequest, DeleteBookResponse> msgPublisher,
-            [FromRoute] Guid id)
+        public async Task<IActionResult> Delete(
+            [FromServices] IDeleteMessagePublisher<int, Task<DeleteCategoryResponse>> msgPublisher,
+            [FromRoute] int id)
         {
-            DeleteBookRequest request = new DeleteBookRequest { Id = id };
-
-            var resp = msgPublisher.SendDeleteMessage(request);
+            var resp = await msgPublisher.SendDeleteMessage(id);
 
             if (resp is null)
             {
                 return BadRequest();
             }
 
-            return Created($"/books/{resp.Id}", resp);
+            return Created($"/categories/{resp.Id}", resp);
         }
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(
-            [FromServices] IGetByIdMessagePublisher<Guid, Task<GetByIdBookResponse>> msgPublisher,
-            [FromRoute] Guid id)
+            [FromServices] IGetByIdMessagePublisher<int, Task<GetByIdCategoryResponse>> msgPublisher,
+            [FromRoute] int id)
         {
             var resp = await msgPublisher.SendGetByIdMessage(id);
 
@@ -72,16 +70,16 @@ namespace RabbitClient.Controllers
                 return BadRequest();
             }
 
-            return StatusCode(200, resp.Book);
+            return StatusCode(200, resp.Category);
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(
-            [FromServices] IUpdateMessagePublisher<Guid, BookModel, UpdateBookResponse> msgPublisher,
-            [FromRoute] Guid id,
-            [FromBody] BookModel request)
+        public async Task<IActionResult> Update(
+            [FromServices] IUpdateMessagePublisher<int, CategoryModel, Task<UpdateCategoryResponse>> msgPublisher,
+            [FromRoute] int id,
+            [FromBody] CategoryModel request)
         {
-            var resp = msgPublisher.SendUpdateMessage(id, request);
+            var resp = await msgPublisher.SendUpdateMessage(id, request);
 
             if (resp is null)
             {

@@ -16,7 +16,7 @@ namespace RabbitServer.Consumers.Book
             _command = command;
         }
 
-        public Task Consume(ConsumeContext<DeleteBookRequest> context)
+        public async Task Consume(ConsumeContext<DeleteBookRequest> context)
         {
             Responce<Guid> result = _command.Delete(context.Message.Id);
 
@@ -26,9 +26,7 @@ namespace RabbitServer.Consumers.Book
                 Error = result.Errors?.Count > 0 ? result.Errors[0] : ""
             };
 
-            context.Respond(responce);
-
-            return Task.CompletedTask;
+            await context.RespondAsync(responce);
         }
     }
 }

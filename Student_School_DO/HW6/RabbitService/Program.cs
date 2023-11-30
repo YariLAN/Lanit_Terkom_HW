@@ -1,9 +1,15 @@
 using MassTransit;
 using Models;
 using Models.Request.Book;
+using Models.Request.Category;
+using Models.Request.Reader;
 using Models.Responce.Book;
+using Models.Response.Category;
+using Models.Response.Reader;
 using RabbitClient.Publishers.Books;
+using RabbitClient.Publishers.Categories;
 using RabbitClient.Publishers.Interfaces;
+using RabbitClient.Publishers.Readers;
 
 namespace RabbitClient
 {
@@ -17,11 +23,23 @@ namespace RabbitClient
 
             builder.Services.AddControllers();
 
-            builder.Services.AddTransient<ICreateMessagePublisher<CreateBookRequest, CreateBookResponse>,CreateBookPublisher>();
+            builder.Services.AddScoped<ICreateMessagePublisher<CreateBookRequest, Task<CreateBookResponse>>, CreateBookPublisher>();
             builder.Services.AddTransient<IGetByIdMessagePublisher<Guid, Task<GetByIdBookResponse>>, GetByIdBookPublisher>();
-            builder.Services.AddTransient<IDeleteMessagePublisher<DeleteBookRequest, DeleteBookResponse>, DeleteBookPublisher>();
-            builder.Services.AddTransient<IGetAllMessagePublisher<GetAllBookResponse, BookModel>, GetAllBookPublisher>();
-            builder.Services.AddTransient<IUpdateMessagePublisher<Guid, BookModel, UpdateBookResponse>, UpdateBookPublisher>();
+            builder.Services.AddTransient<IDeleteMessagePublisher<Guid, Task<DeleteBookResponse>>, DeleteBookPublisher>();
+            builder.Services.AddTransient<IGetAllMessagePublisher<Task<GetAllBookResponse>, BookModel>, GetAllBookPublisher>();
+            builder.Services.AddTransient<IUpdateMessagePublisher<Guid, BookModel, Task<UpdateBookResponse>>, UpdateBookPublisher>();
+
+            builder.Services.AddTransient<ICreateMessagePublisher<CreateReaderRequest, Task<CreateReaderResponse>>, CreateReaderPublisher>();
+            builder.Services.AddTransient<IDeleteMessagePublisher<Guid, Task<DeleteReaderResponse>>, DeleteReaderPublisher>();
+            builder.Services.AddTransient<IGetAllMessagePublisher<Task<GetAllReaderResponse>, ReaderModel>, GetAllReaderPublisher>();
+            builder.Services.AddTransient<IGetByIdMessagePublisher<Guid, Task<GetByIdReaderResponse>>, GetByIdReaderPublisher>();
+            builder.Services.AddTransient<IUpdateMessagePublisher<Guid, ReaderModel, Task<UpdateReaderResponse>>, UpdateReaderPublisher>();
+
+            builder.Services.AddTransient<ICreateMessagePublisher<CreateCategoryRequest, Task<CreateCategoryResponse>>, CreateCategoryPublisher>();
+            builder.Services.AddTransient<IDeleteMessagePublisher<int, Task<DeleteCategoryResponse>>, DeleteCatergoryPublisher>();
+            builder.Services.AddTransient<IGetAllMessagePublisher<Task<GetAllCategoryResponse>, CategoryModel>, GetAllCategoryPublisher>();
+            builder.Services.AddTransient<IGetByIdMessagePublisher<int, Task<GetByIdCategoryResponse>>, GetByIdCategoryPublisher>();
+            builder.Services.AddTransient<IUpdateMessagePublisher<int, CategoryModel, Task<UpdateCategoryResponse>>, UpdateCategoryPublisher>();
 
             try
             {

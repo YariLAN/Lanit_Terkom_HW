@@ -5,7 +5,7 @@ using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Publishers.Books
 {
-    public class DeleteBookPublisher : IDeleteMessagePublisher<DeleteBookRequest, DeleteBookResponse>
+    public class DeleteBookPublisher : IDeleteMessagePublisher<Guid, Task<DeleteBookResponse>>
     {
         private readonly IRequestClient<DeleteBookRequest> _requestClient;
 
@@ -14,9 +14,12 @@ namespace RabbitClient.Publishers.Books
             _requestClient = requestClient;
         }
 
-        public DeleteBookResponse SendDeleteMessage(DeleteBookRequest id)
+        public async Task<DeleteBookResponse> SendDeleteMessage(Guid id)
         {
-            Response<DeleteBookResponse> result = _requestClient.GetResponse<DeleteBookResponse>(id).Result;
+            DeleteBookRequest request = new() { Id = id };
+
+            Response<DeleteBookResponse> result =
+                await _requestClient.GetResponse<DeleteBookResponse>(request);
 
             return result.Message;
         }

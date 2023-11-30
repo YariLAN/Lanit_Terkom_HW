@@ -7,7 +7,7 @@ using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Publishers.Categories
 {
-    public class GetAllCategoryPublisher : IGetAllMessagePublisher<GetAllCategoryResponse, CategoryModel>
+    public class GetAllCategoryPublisher : IGetAllMessagePublisher<Task<GetAllCategoryResponse>, CategoryModel>
     {
         private readonly IRequestClient<CategoryModel> _requestClient;
 
@@ -16,9 +16,10 @@ namespace RabbitClient.Publishers.Categories
             _requestClient = requestClient;
         }
 
-        public GetAllCategoryResponse SendGetAllMessage(CategoryModel request)
+        public async Task<GetAllCategoryResponse> SendGetAllMessage(CategoryModel request)
         {
-            Response<GetAllCategoryResponse> result = _requestClient.GetResponse<GetAllCategoryResponse>(request).Result;
+            Response<GetAllCategoryResponse> result =
+                await _requestClient.GetResponse<GetAllCategoryResponse>(request);
 
             return result.Message;
         }

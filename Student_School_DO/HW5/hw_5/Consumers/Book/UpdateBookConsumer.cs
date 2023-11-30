@@ -15,7 +15,7 @@ namespace RabbitServer.Consumers.Book
             _command = command;
         }
 
-        public Task Consume(ConsumeContext<UpdateBookRequest> context)
+        public async Task Consume(ConsumeContext<UpdateBookRequest> context)
         {
             Responce<Guid> id = _command.Update(context.Message.Book.BookId, context.Message.Book);
 
@@ -24,9 +24,7 @@ namespace RabbitServer.Consumers.Book
                 Id = id.Value
             };
 
-            context.Respond(responce);
-
-            return Task.CompletedTask;
+            await context.RespondAsync(responce);
         }
     }
 }

@@ -14,15 +14,13 @@ namespace RabbitServer.Consumers.Book
             _command = command;
         }
 
-        public Task Consume(ConsumeContext<BookModel> context)
+        public async Task Consume(ConsumeContext<BookModel> context)
         {
             IEnumerable<BookModel> result = _command.GetAll().Value;
 
             var allBook = new GetAllBookResponse { Books = result };
 
-            context.Respond(allBook);
-
-            return Task.CompletedTask;
+            await context.RespondAsync(allBook);
         }
     }
 }

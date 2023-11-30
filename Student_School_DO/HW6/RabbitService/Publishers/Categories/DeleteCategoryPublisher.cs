@@ -5,7 +5,7 @@ using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Publishers.Categories
 {
-    public class DeleteCatergoryPublisher : IDeleteMessagePublisher<DeleteCategoryRequest, DeleteCategoryResponse>
+    public class DeleteCatergoryPublisher : IDeleteMessagePublisher<int, Task<DeleteCategoryResponse>>
     {
         private readonly IRequestClient<DeleteCategoryResponse> _requestClient;
 
@@ -14,9 +14,12 @@ namespace RabbitClient.Publishers.Categories
             _requestClient = requestClient;
         }
 
-        public DeleteCategoryResponse SendDeleteMessage(DeleteCategoryRequest id)
+        public async Task<DeleteCategoryResponse> SendDeleteMessage(int id)
         {
-            Response<DeleteCategoryResponse> result = _requestClient.GetResponse<DeleteCategoryResponse>(request).Result;
+            DeleteCategoryRequest request = new() { Id = id };
+
+            Response<DeleteCategoryResponse> result =
+                await _requestClient.GetResponse<DeleteCategoryResponse>(request);
 
             return result.Message;
         }
