@@ -17,35 +17,35 @@ namespace hw_5.Controllers
 
         // GET: api/<GenreController>
         [HttpGet]
-        public Responce<IEnumerable<CategoryModel>> Get()
+        public Response<IEnumerable<CategoryInfo>> Get()
         {
             return _catCommand.GetAll();
         }
 
         // GET api/<GenreController>/<id>
         [HttpGet("{id}")]
-        public Responce<CategoryModel> Get(int id)
+        public Response<CategoryInfo> Get(int id)
         {
             return _catCommand.GetById(id);
         }
 
         // POST api/<GenreController>
         [HttpPost]
-        public Responce<int> Post([FromBody] CategoryModel genre)
+        public Response<int> Post([FromBody] CategoryInfo genre)
         {
             return _catCommand.Create(genre);
         }
 
         // PUT api/<GenreController>/<id>
         [HttpPut("{id}")]
-        public Responce<int> Put([FromRoute] int id, [FromBody] CategoryModel genre)
+        public Response<int> Put([FromRoute] int id, [FromBody] CategoryInfo genre)
         {
             return _catCommand.Update(id, genre);
         }
 
         // DELETE api/<GenreController>/<id>
         [HttpDelete("{id}")]
-        public Responce<int> Delete(int id)
+        public Response<int> Delete(int id)
         {
             return _catCommand.Delete(id);
         }

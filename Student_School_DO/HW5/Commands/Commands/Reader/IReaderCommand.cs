@@ -4,10 +4,10 @@ using Models;
 namespace Commands.Commands.Reader
 {
     public interface IReaderCommand :
-        ICreateCommand<ReaderModel, Guid>,
-        IUpdateCommand<ReaderModel, Guid>,
-        IGetAllCommand<ReaderModel>,
-        IGetByIdCommand<Guid,  ReaderModel>,
+        ICreateCommand<ReaderInfo, Guid>,
+        IUpdateCommand<ReaderInfo, Guid>,
+        IGetAllCommand<ReaderInfo>,
+        IGetByIdCommand<Guid,  ReaderInfo>,
         IDeleteCommand<Guid>
     {
 

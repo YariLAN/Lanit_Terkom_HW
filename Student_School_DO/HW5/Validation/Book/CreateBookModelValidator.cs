@@ -5,7 +5,7 @@ using Validation.Book.Interfaces;
 namespace Validation.Book
 {
     public class CreateBookModelValidator :
-        AbstractValidator<BookModel>,
+        AbstractValidator<BookInfo>,
         ICreateBookModelValidator
     {
         public CreateBookModelValidator()

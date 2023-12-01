@@ -23,7 +23,7 @@ namespace Commands.Commands.Genre
             _validate = validate;
         }
 
-        public Responce<int> Create(GenreModel entity)
+        public Response<int> Create(GenreInfo entity)
         {
             ValidationResult validation = _validate.Validate(entity);
             if (!validation.IsValid)
@@ -40,7 +40,7 @@ namespace Commands.Commands.Genre
             return new();
         }
 
-        public Responce<int> Delete(int id)
+        public Response<int> Delete(int id)
         {
             _rep.DeleteById(id);
 
@@ -50,19 +50,19 @@ namespace Commands.Commands.Genre
             };
         }
 
-        public Responce<IEnumerable<GenreModel>> GetAll()
+        public Response<IEnumerable<GenreInfo>> GetAll()
         {
             return new()
             {
-                Value = _mapper.Map<IEnumerable<GenreModel>>(_rep.GetAll()),
+                Value = _mapper.Map<IEnumerable<GenreInfo>>(_rep.GetAll()),
             };
         }
 
-        public Responce<GenreModel> GetById(int id)
+        public Response<GenreInfo> GetById(int id)
         {
             var dbReader = _rep.GetById(id);
 
-            var map = _mapper.Map<GenreModel>(dbReader);
+            var map = _mapper.Map<GenreInfo>(dbReader);
 
             return new()
             {
@@ -70,7 +70,7 @@ namespace Commands.Commands.Genre
             };
         }
 
-        public Responce<int> Update(int id, GenreModel entity)
+        public Response<int> Update(int id, GenreInfo entity)
         {
             ValidationResult validation = _validate.Validate(entity);
             if (!validation.IsValid)

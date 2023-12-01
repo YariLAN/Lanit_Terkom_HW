@@ -4,10 +4,10 @@ using Models;
 namespace Commands.Commands.Issued
 {
     public interface IIssuedCommand :
-        ICreateCommand<IssuedModel, Guid>,
-        IUpdateCommand<IssuedModel, Guid>,
-        IGetAllCommand<IssuedModel>,
-        IGetByIdCommand<Guid, IssuedModel>,
+        ICreateCommand<IssuedInfo, Guid>,
+        IUpdateCommand<IssuedInfo, Guid>,
+        IGetAllCommand<IssuedInfo>,
+        IGetByIdCommand<Guid, IssuedInfo>,
         IDeleteCommand<Guid>
     {
 

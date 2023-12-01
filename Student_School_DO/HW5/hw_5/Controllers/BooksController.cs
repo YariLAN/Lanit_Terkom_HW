@@ -17,35 +17,35 @@ namespace hw_5.Controllers
 
         // GET: api/<ReaderController>
         [HttpGet]
-        public Responce<IEnumerable<BookModel>> Get()
+        public Response<IEnumerable<BookInfo>> Get()
         {
             return _bookCommand.GetAll();
         }
 
         // GET api/<ReaderController>/5
         [HttpGet("{id}")]
-        public Responce<BookModel> Get(Guid id)
+        public Response<BookInfo> Get(Guid id)
         {
             return _bookCommand.GetById(id);
         }
 
         // POST api/<ReaderController>
         [HttpPost]
-        public Responce<Guid> Post([FromBody] BookModel entity)
+        public Response<Guid> Post([FromBody] BookInfo entity)
         {
             return _bookCommand.Create(entity);
         }
 
         // PUT api/<ReaderController>/5
         [HttpPut("{id}")]
-        public Responce<Guid> Put(Guid id, [FromBody] BookModel entity)
+        public Response<Guid> Put(Guid id, [FromBody] BookInfo entity)
         {
             return _bookCommand.Update(id, entity);
         }
 
         // DELETE api/<ReaderController>/5
         [HttpDelete("{id}")]
-        public Responce<Guid> Delete(Guid id)
+        public Response<Guid> Delete(Guid id)
         {
             return _bookCommand.Delete(id);
         }

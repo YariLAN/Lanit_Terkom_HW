@@ -5,7 +5,7 @@ using Validation.Reader.Interfaces;
 namespace Validation.Reader
 {
     public class CreateReaderModelValidator :
-        AbstractValidator<ReaderModel>,
+        AbstractValidator<ReaderInfo>,
         ICreateReaderModelValidator
     {
         public CreateReaderModelValidator()

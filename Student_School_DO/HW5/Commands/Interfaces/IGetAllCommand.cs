@@ -4,6 +4,6 @@ namespace Commands.Interfaces
 {
     public interface IGetAllCommand<T>
     {
-        public Responce<IEnumerable<T>> GetAll();
+        public Response<IEnumerable<T>> GetAll();
     }
 }

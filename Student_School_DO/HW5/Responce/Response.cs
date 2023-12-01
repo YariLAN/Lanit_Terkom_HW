@@ -1,6 +1,6 @@
 ﻿namespace Models
 {
-    public class Responce<T>
+    public class Response<T>
     {
         public T Value { get; set; }
 
