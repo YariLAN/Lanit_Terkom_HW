@@ -33,7 +33,10 @@ namespace Repositories
 
         public Reader? GetById(Guid id)
         {
-            return _db.Readers.FirstOrDefault(b => b.ReaderId == id);
+            return _db.Readers
+                    .Include(r => r.Category)
+                    .Include(r => r.Issueds)
+                    .FirstOrDefault(b => b.ReaderId == id);
         }
 
         public void UpdateItem(Reader entity)

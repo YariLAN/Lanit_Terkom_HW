@@ -18,7 +18,7 @@
 
         public Category Category { get; set; }
 
-        public ICollection<Issued> Issueds { get; set; }
+        public ICollection<Issued> Issueds { get; set; } = new List<Issued>();
 
         public Reader() { }
 

@@ -6,7 +6,7 @@
 
         public string Name { get; set; }
 
-        public ICollection<Reader> Readers { get; set; }
+        public ICollection<Reader> Readers { get; set; } = new List<Reader>();
 
         public Category() { }
 

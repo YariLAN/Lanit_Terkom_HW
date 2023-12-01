@@ -1,4 +1,6 @@
-﻿namespace EntitiesEF
+﻿using System.Text.Json.Serialization;
+
+namespace EntitiesEF
 {
     public class Issued : IEntity<Issued>
     {

@@ -33,7 +33,10 @@ namespace Repositories
 
         public Issued? GetById(Guid id)
         {
-            return _db.Issueds.FirstOrDefault(b => b.IssuedId == id);
+            return _db.Issueds
+                        .Include(i => i.Book)
+                        .Include(i => i.Book.Genre)
+                        .FirstOrDefault(b => b.IssuedId == id);
         }
 
         public void UpdateItem(Issued entity)

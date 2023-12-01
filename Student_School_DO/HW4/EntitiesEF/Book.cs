@@ -18,7 +18,7 @@
 
         public Genre Genre { get; set; }
 
-        public ICollection<Issued> Issueds { get; set; }
+        public ICollection<Issued> Issueds { get; set; } = new List<Issued>();
 
         public Book() { }
 
