@@ -36,7 +36,6 @@ namespace Repositories
             var cat = _db.Categories
                         .Include(c => c.Readers)
                         .FirstOrDefault(b => b.CategoryId == id);
-
             return cat;
         }
 
