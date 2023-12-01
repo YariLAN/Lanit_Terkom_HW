@@ -17,7 +17,7 @@ namespace RabbitServer.Consumers.Category
 
         public async Task Consume(ConsumeContext<UpdateCategoryRequest> context)
         {
-            Responce<int> id = _command.Update(
+            Models.Response<int> id = _command.Update(
                 context.Message.Category.CategoryId,
                 context.Message.Category);
 

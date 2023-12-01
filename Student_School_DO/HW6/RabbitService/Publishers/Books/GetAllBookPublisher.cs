@@ -6,18 +6,18 @@ using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Publishers.Books
 {
-    public class GetAllBookPublisher : IGetAllMessagePublisher<Task<GetAllBookResponse>, BookModel>
+    public class GetAllBookPublisher : IGetAllMessagePublisher<Task<GetAllBookResponse>, BookInfo>
     {
-        private readonly IRequestClient<BookModel> _requestClient;
+        private readonly IRequestClient<BookInfo> _requestClient;
 
-        public GetAllBookPublisher([FromServices] IRequestClient<BookModel> requestClient)
+        public GetAllBookPublisher([FromServices] IRequestClient<BookInfo> requestClient)
         {
             _requestClient = requestClient;
         }
 
-        public async Task<GetAllBookResponse> SendGetAllMessage(BookModel request)
+        public async Task<GetAllBookResponse> SendGetAllMessage(BookInfo request)
         {
-            Response<GetAllBookResponse> result =
+            MassTransit.Response<GetAllBookResponse> result =
                 await _requestClient.GetResponse<GetAllBookResponse>(request);
 
             return result.Message;

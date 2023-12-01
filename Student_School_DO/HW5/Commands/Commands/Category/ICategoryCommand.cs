@@ -4,10 +4,10 @@ using Models;
 namespace Commands.Commands.Category
 {
     public interface ICategoryCommand :
-        ICreateCommand<CategoryModel, int>,
-        IUpdateCommand<CategoryModel, int>,
-        IGetAllCommand<CategoryModel>,
-        IGetByIdCommand<int, CategoryModel>,
+        ICreateCommand<CategoryInfo, int>,
+        IUpdateCommand<CategoryInfo, int>,
+        IGetAllCommand<CategoryInfo>,
+        IGetByIdCommand<int, CategoryInfo>,
         IDeleteCommand<int>
     {
 

@@ -5,7 +5,7 @@ using Models.Responce.Book;
 
 namespace RabbitServer.Consumers.Book
 {
-    public class GetAllBookConsumer : IConsumer<BookModel>
+    public class GetAllBookConsumer : IConsumer<BookInfo>
     {
         private readonly IBookCommand _command;
 
@@ -14,9 +14,9 @@ namespace RabbitServer.Consumers.Book
             _command = command;
         }
 
-        public async Task Consume(ConsumeContext<BookModel> context)
+        public async Task Consume(ConsumeContext<BookInfo> context)
         {
-            IEnumerable<BookModel> result = _command.GetAll().Value;
+            IEnumerable<BookInfo> result = _command.GetAll().Value;
 
             var allBook = new GetAllBookResponse { Books = result };
 

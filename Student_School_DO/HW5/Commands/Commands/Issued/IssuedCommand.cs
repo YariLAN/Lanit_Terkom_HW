@@ -15,7 +15,7 @@ namespace Commands.Commands.Issued
             _rep = rep;
         }
 
-        public Responce<Guid> Create(IssuedModel entity)
+        public Response<Guid> Create(IssuedInfo entity)
         {
             // валидация
 
@@ -33,7 +33,7 @@ namespace Commands.Commands.Issued
             };
         }
 
-        public Responce<Guid> Delete(Guid id)
+        public Response<Guid> Delete(Guid id)
         {
             _rep.DeleteById(id);
 
@@ -43,11 +43,11 @@ namespace Commands.Commands.Issued
             };
         }
 
-        public Responce<IEnumerable<IssuedModel>> GetAll()
+        public Response<IEnumerable<IssuedInfo>> GetAll()
         {
             var dbReaders = _rep.GetAll();
 
-            var map = _mapper.Map<IEnumerable<IssuedModel>>(dbReaders);
+            var map = _mapper.Map<IEnumerable<IssuedInfo>>(dbReaders);
 
             return new()
             {
@@ -55,11 +55,11 @@ namespace Commands.Commands.Issued
             };
         }
 
-        public Responce<IssuedModel> GetById(Guid id)
+        public Response<IssuedInfo> GetById(Guid id)
         {
             var dbReader = _rep.GetById(id);
 
-            var map = _mapper.Map<IssuedModel>(dbReader);
+            var map = _mapper.Map<IssuedInfo>(dbReader);
 
             return new()
             {
@@ -67,7 +67,7 @@ namespace Commands.Commands.Issued
             };
         }
 
-        public Responce<Guid> Update(Guid id, IssuedModel entity)
+        public Response<Guid> Update(Guid id, IssuedInfo entity)
         {
             entity.IssuedId = id;
 

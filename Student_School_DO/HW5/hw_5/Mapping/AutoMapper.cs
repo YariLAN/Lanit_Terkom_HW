@@ -8,11 +8,11 @@ namespace RabbitServer.Mapping
     {
         public AutoMapper()
         {
-            CreateMap<Reader, ReaderModel>().ReverseMap();
-            CreateMap<Category, CategoryModel>().ReverseMap();
-            CreateMap<Genre, GenreModel>().ReverseMap();
-            CreateMap<Book,  BookModel>().ReverseMap();
-            CreateMap<Issued, IssuedModel>().ReverseMap();
+            CreateMap<Reader, ReaderInfo>().ReverseMap();
+            CreateMap<Category, CategoryInfo>().ReverseMap();
+            CreateMap<Genre, GenreInfo>().ReverseMap();
+            CreateMap<Book,  BookInfo>().ReverseMap();
+            CreateMap<Issued, IssuedInfo>().ReverseMap();
         }
     }
 }

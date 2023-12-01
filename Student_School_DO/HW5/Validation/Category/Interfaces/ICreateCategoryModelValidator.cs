@@ -3,7 +3,7 @@ using Models;
 
 namespace Validation.Category.Interfaces
 {
-    public interface ICreateCategoryModelValidator : IValidator<CategoryModel>
+    public interface ICreateCategoryModelValidator : IValidator<CategoryInfo>
     {
     }
 }

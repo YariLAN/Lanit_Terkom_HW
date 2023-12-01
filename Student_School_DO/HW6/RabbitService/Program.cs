@@ -26,20 +26,20 @@ namespace RabbitClient
             builder.Services.AddScoped<ICreateMessagePublisher<CreateBookRequest, Task<CreateBookResponse>>, CreateBookPublisher>();
             builder.Services.AddTransient<IGetByIdMessagePublisher<Guid, Task<GetByIdBookResponse>>, GetByIdBookPublisher>();
             builder.Services.AddTransient<IDeleteMessagePublisher<Guid, Task<DeleteBookResponse>>, DeleteBookPublisher>();
-            builder.Services.AddTransient<IGetAllMessagePublisher<Task<GetAllBookResponse>, BookModel>, GetAllBookPublisher>();
-            builder.Services.AddTransient<IUpdateMessagePublisher<Guid, BookModel, Task<UpdateBookResponse>>, UpdateBookPublisher>();
+            builder.Services.AddTransient<IGetAllMessagePublisher<Task<GetAllBookResponse>, BookInfo>, GetAllBookPublisher>();
+            builder.Services.AddTransient<IUpdateMessagePublisher<Guid, BookInfo, Task<UpdateBookResponse>>, UpdateBookPublisher>();
 
             builder.Services.AddTransient<ICreateMessagePublisher<CreateReaderRequest, Task<CreateReaderResponse>>, CreateReaderPublisher>();
             builder.Services.AddTransient<IDeleteMessagePublisher<Guid, Task<DeleteReaderResponse>>, DeleteReaderPublisher>();
-            builder.Services.AddTransient<IGetAllMessagePublisher<Task<GetAllReaderResponse>, ReaderModel>, GetAllReaderPublisher>();
+            builder.Services.AddTransient<IGetAllMessagePublisher<Task<GetAllReaderResponse>, ReaderInfo>, GetAllReaderPublisher>();
             builder.Services.AddTransient<IGetByIdMessagePublisher<Guid, Task<GetByIdReaderResponse>>, GetByIdReaderPublisher>();
-            builder.Services.AddTransient<IUpdateMessagePublisher<Guid, ReaderModel, Task<UpdateReaderResponse>>, UpdateReaderPublisher>();
+            builder.Services.AddTransient<IUpdateMessagePublisher<Guid, ReaderInfo, Task<UpdateReaderResponse>>, UpdateReaderPublisher>();
 
             builder.Services.AddTransient<ICreateMessagePublisher<CreateCategoryRequest, Task<CreateCategoryResponse>>, CreateCategoryPublisher>();
             builder.Services.AddTransient<IDeleteMessagePublisher<int, Task<DeleteCategoryResponse>>, DeleteCatergoryPublisher>();
-            builder.Services.AddTransient<IGetAllMessagePublisher<Task<GetAllCategoryResponse>, CategoryModel>, GetAllCategoryPublisher>();
+            builder.Services.AddTransient<IGetAllMessagePublisher<Task<GetAllCategoryResponse>, CategoryInfo>, GetAllCategoryPublisher>();
             builder.Services.AddTransient<IGetByIdMessagePublisher<int, Task<GetByIdCategoryResponse>>, GetByIdCategoryPublisher>();
-            builder.Services.AddTransient<IUpdateMessagePublisher<int, CategoryModel, Task<UpdateCategoryResponse>>, UpdateCategoryPublisher>();
+            builder.Services.AddTransient<IUpdateMessagePublisher<int, CategoryInfo, Task<UpdateCategoryResponse>>, UpdateCategoryPublisher>();
 
             try
             {

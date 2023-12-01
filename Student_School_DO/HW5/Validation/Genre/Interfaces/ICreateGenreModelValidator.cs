@@ -3,7 +3,7 @@ using Models;
 
 namespace Validation.Genre.Interfaces
 {
-    public interface ICreateGenreModelValidator : IValidator<GenreModel>
+    public interface ICreateGenreModelValidator : IValidator<GenreInfo>
     {
     }
 }

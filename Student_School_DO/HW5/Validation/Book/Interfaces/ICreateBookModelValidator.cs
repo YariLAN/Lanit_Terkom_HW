@@ -3,7 +3,7 @@ using Models;
 
 namespace Validation.Book.Interfaces
 {
-    public interface ICreateBookModelValidator : IValidator<BookModel>
+    public interface ICreateBookModelValidator : IValidator<BookInfo>
     {
     }
 }

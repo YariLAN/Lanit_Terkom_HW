@@ -4,10 +4,10 @@ using Models;
 namespace Commands.Commands.Genre
 {
     public interface IGenreCommand :
-        ICreateCommand<GenreModel, int>,
-        IUpdateCommand<GenreModel, int>,
-        IGetAllCommand<GenreModel>,
-        IGetByIdCommand<int, GenreModel>,
+        ICreateCommand<GenreInfo, int>,
+        IUpdateCommand<GenreInfo, int>,
+        IGetAllCommand<GenreInfo>,
+        IGetByIdCommand<int, GenreInfo>,
         IDeleteCommand<int>
     {
 

@@ -20,7 +20,7 @@ namespace RabbitClient.Publishers.Books
         {
             GetByIdBookRequest request = new GetByIdBookRequest { Id = id };
 
-            Response<GetByIdBookResponse> result = await _requestClient.GetResponse<GetByIdBookResponse>(request);
+            MassTransit.Response<GetByIdBookResponse> result = await _requestClient.GetResponse<GetByIdBookResponse>(request);
 
             return result.Message;
         }

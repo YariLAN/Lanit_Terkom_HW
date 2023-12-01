@@ -8,7 +8,7 @@ using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Publishers.Categories
 {
-    public class UpdateCategoryPublisher : IUpdateMessagePublisher<int, CategoryModel, Task<UpdateCategoryResponse>>
+    public class UpdateCategoryPublisher : IUpdateMessagePublisher<int, CategoryInfo, Task<UpdateCategoryResponse>>
     {
         private readonly IRequestClient<UpdateCategoryRequest> _requestClient;
 
@@ -17,13 +17,13 @@ namespace RabbitClient.Publishers.Categories
             _requestClient = requestClient;
         }
 
-        public async Task<UpdateCategoryResponse> SendUpdateMessage(int id, CategoryModel request)
+        public async Task<UpdateCategoryResponse> SendUpdateMessage(int id, CategoryInfo request)
         {
             request.CategoryId = id;
 
             UpdateCategoryRequest req = new UpdateCategoryRequest { Category = request };
 
-            Response<UpdateCategoryResponse> result =
+            MassTransit.Response<UpdateCategoryResponse> result =
                 await _requestClient.GetResponse<UpdateCategoryResponse>(req);
 
             return result.Message;

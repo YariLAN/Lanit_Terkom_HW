@@ -2,6 +2,6 @@
 {
     public class GetByIdBookResponse
     {
-        public BookModel Book { get; set; }
+        public BookInfo Book { get; set; }
     }
 }

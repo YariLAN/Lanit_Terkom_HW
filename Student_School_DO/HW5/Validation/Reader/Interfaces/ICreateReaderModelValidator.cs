@@ -3,7 +3,7 @@ using Models;
 
 namespace Validation.Reader.Interfaces
 {
-    public interface ICreateReaderModelValidator : IValidator<ReaderModel>
+    public interface ICreateReaderModelValidator : IValidator<ReaderInfo>
     {
     }
 }

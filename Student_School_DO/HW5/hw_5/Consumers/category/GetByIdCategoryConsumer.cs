@@ -18,7 +18,7 @@ namespace RabbitServer.Consumers.Category
 
         public async Task Consume(ConsumeContext<GetByIdCategoryRequest> context)
         {
-            Responce<CategoryModel> categories = _command.GetById(context.Message.Id!.Value);
+            Models.Response<CategoryInfo> categories = _command.GetById(context.Message.Id!.Value);
 
             GetByIdCategoryResponse responce =
                 new GetByIdCategoryResponse { Category = categories.Value };

@@ -1,6 +1,6 @@
 ﻿namespace Models
 {
-    public class IssuedModel
+    public class IssuedInfo
     {
         public Guid IssuedId { get; set; }
 
@@ -12,8 +12,8 @@
 
         public DateTime DateDue { get; set; }
 
-        public ReaderModel? Reader { get; set; }
+        public ReaderInfo? Reader { get; set; }
 
-        public BookModel? Book { get; set; }
+        public BookInfo? Book { get; set; }
     }
 }

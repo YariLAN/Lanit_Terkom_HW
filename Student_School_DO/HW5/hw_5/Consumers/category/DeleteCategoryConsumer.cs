@@ -18,7 +18,7 @@ namespace RabbitServer.Consumers.Category
 
         public async Task Consume(ConsumeContext<DeleteCategoryRequest> context)
         {
-            Responce<int> result = _command.Delete(context.Message.Id);
+            Models.Response<int> result = _command.Delete(context.Message.Id);
 
             DeleteCategoryResponse responce = new DeleteCategoryResponse
             {

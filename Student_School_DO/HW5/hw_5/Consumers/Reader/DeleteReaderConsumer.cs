@@ -17,7 +17,7 @@ namespace RabbitServer.Consumers.Reader
 
         public async Task Consume(ConsumeContext<DeleteReaderRequest> context)
         {
-            Responce<Guid> result = _command.Delete(context.Message.Id);
+            Models.Response<Guid> result = _command.Delete(context.Message.Id);
 
             DeleteReaderResponse responce = new DeleteReaderResponse
             {

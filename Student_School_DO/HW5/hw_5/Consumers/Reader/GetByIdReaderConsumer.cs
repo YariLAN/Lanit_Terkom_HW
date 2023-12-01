@@ -17,7 +17,7 @@ namespace RabbitServer.Consumers.Reader
 
         public async Task Consume(ConsumeContext<GetByIdReaderRequest> context)
         {
-            Responce<ReaderModel> result = _command.GetById(context.Message.Id);
+            Models.Response<ReaderInfo> result = _command.GetById(context.Message.Id);
 
             GetByIdReaderResponse allBook = new() { Reader = result.Value };
 
