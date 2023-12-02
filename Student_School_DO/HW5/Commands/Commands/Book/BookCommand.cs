@@ -29,7 +29,7 @@ namespace Commands.Commands.Book
             {
                 return new()
                 {
-                    Errors = validation.Errors.Select(e => e.ErrorMessage).ToList()
+                    Messages = validation.Errors.Select(e => e.ErrorMessage).ToList()
                 };
             }
 
@@ -43,7 +43,7 @@ namespace Commands.Commands.Book
             return new()
             {
                 Value = dbReader.BookId,
-                Errors = new List<string>()
+                Messages = new List<string>()
             };
         }
 
@@ -87,7 +87,7 @@ namespace Commands.Commands.Book
                 return new()
                 {
                     Value = id,
-                    Errors = validation.Errors.Select(e => e.ErrorMessage).ToList()
+                    Messages = validation.Errors.Select(e => e.ErrorMessage).ToList()
                 };
             }
 

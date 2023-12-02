@@ -23,7 +23,7 @@ namespace RabbitServer.Consumers.Reader
             CreateReaderResponse responce = new()
             {
                 Id = result.Value,
-                Error = result.Errors?.Count > 0 ? result.Errors[0] : ""
+                Error = result.Messages?.Count > 0 ? result.Messages[0] : ""
             };
 
             await context.RespondAsync(responce);

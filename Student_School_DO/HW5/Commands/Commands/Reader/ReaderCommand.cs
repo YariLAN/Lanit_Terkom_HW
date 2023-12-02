@@ -30,7 +30,7 @@ namespace Commands.Commands.Reader
             {
                 return new()
                 {
-                    Errors = validation.Errors.Select(e => e.ErrorMessage).ToList()
+                    Messages = validation.Errors.Select(e => e.ErrorMessage).ToList()
                 };
             }
 
@@ -43,7 +43,7 @@ namespace Commands.Commands.Reader
             return new()
             {
                 Value = dbReader.ReaderId,
-                Errors = new List<string>()
+                Messages = new List<string>()
             };
         }
 
@@ -53,7 +53,8 @@ namespace Commands.Commands.Reader
 
             return new()
             {
-                Value = id
+                Value = id,
+                Messages = new List<string> { "Entity deleted" }
             };
         }
 
@@ -87,7 +88,7 @@ namespace Commands.Commands.Reader
                 return new()
                 {
                     Value = id,
-                    Errors = validation.Errors.Select(e => e.ErrorMessage).ToList()
+                    Messages = validation.Errors.Select(e => e.ErrorMessage).ToList()
                 };
             }
 
@@ -100,6 +101,7 @@ namespace Commands.Commands.Reader
             return new()
             {
                 Value = dbReader.ReaderId,
+                Messages = new List<string> { "Is Update" }
             };
         }
     }

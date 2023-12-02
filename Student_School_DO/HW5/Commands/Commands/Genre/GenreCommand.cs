@@ -30,7 +30,7 @@ namespace Commands.Commands.Genre
             {
                 return new()
                 {
-                    Errors = validation.Errors.Select(e => e.ErrorMessage).ToList()
+                    Messages = validation.Errors.Select(e => e.ErrorMessage).ToList()
                 };
             }
 
@@ -78,7 +78,7 @@ namespace Commands.Commands.Genre
                 return new()
                 {
                     Value = id,
-                    Errors = validation.Errors.Select(e => e.ErrorMessage).ToList()
+                    Messages = validation.Errors.Select(e => e.ErrorMessage).ToList()
                 };
             }
 

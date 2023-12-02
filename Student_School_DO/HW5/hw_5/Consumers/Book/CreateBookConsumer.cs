@@ -22,7 +22,7 @@ namespace RabbitServer.Consumers.Book
             CreateBookResponse responce = new CreateBookResponse
             {
                 Id = id.Value,
-                Error = id.Errors?.Count > 0 ? id.Errors[0] : ""
+                Error = id.Messages?.Count > 0 ? id.Messages[0] : ""
             };
 
             await context.RespondAsync(responce);

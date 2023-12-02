@@ -29,7 +29,7 @@ namespace Commands.Commands.Issued
             return new()
             {
                 Value = dbReader.IssuedId,
-                Errors = new List<string>()
+                Messages = new List<string>()
             };
         }
 
