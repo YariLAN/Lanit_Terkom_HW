@@ -79,7 +79,6 @@ namespace RabbitServer
             {
                 throw new Exception("Failed to connect to RabbitMQ");
             }
-
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
