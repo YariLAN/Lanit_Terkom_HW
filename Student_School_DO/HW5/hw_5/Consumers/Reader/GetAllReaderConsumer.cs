@@ -7,7 +7,7 @@ using Models.Response.Reader;
 
 namespace RabbitServer.Consumers.Reader
 {
-    public class GetAllReaderConsumer : IConsumer<ReaderModel>
+    public class GetAllReaderConsumer : IConsumer<ReaderInfo>
     {
         private readonly IReaderCommand _command;
 
@@ -16,9 +16,9 @@ namespace RabbitServer.Consumers.Reader
             _command = command;
         }
 
-        public async Task Consume(ConsumeContext<ReaderModel> context)
+        public async Task Consume(ConsumeContext<ReaderInfo> context)
         {
-            IEnumerable<ReaderModel> result = _command.GetAll().Value;
+            IEnumerable<ReaderInfo> result = _command.GetAll().Value;
 
             var allBook = new GetAllReaderResponse { Readers = result };
 

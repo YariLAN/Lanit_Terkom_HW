@@ -2,6 +2,6 @@
 {
     public class GetAllReaderResponse
     {
-        public IEnumerable<ReaderModel> Readers { get; set; }
+        public IEnumerable<ReaderInfo> Readers { get; set; }
     }
 }

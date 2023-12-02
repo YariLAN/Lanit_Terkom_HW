@@ -20,7 +20,7 @@ namespace RabbitServer.Consumers.Category
 
         public async Task Consume(ConsumeContext<CreateCategoryRequest> context)
         {
-            Responce<int> id = _command.Create(context.Message.Category);
+            Models.Response<int> id = _command.Create(context.Message.Category);
 
             CreateCategoryResponse responce = new CreateCategoryResponse
             {

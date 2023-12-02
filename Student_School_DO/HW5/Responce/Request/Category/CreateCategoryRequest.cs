@@ -2,6 +2,6 @@
 {
     public class CreateCategoryRequest
     {
-        public CategoryModel Category { get; set; }
+        public CategoryInfo Category { get; set; }
     }
 }

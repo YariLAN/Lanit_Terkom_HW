@@ -14,7 +14,7 @@ namespace RabbitClient.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(
             [FromServices] ICreateMessagePublisher<CreateReaderRequest, Task<CreateReaderResponse>> msgPublisher,
-            [FromBody] ReaderModel request)
+            [FromBody] ReaderInfo request)
         {
             var resp = await msgPublisher.SendCreateMessage(new CreateReaderRequest { Reader = request });
 
@@ -28,9 +28,9 @@ namespace RabbitClient.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAll(
-            [FromServices] IGetAllMessagePublisher<Task<GetAllReaderResponse>, ReaderModel> msgPublisher)
+            [FromServices] IGetAllMessagePublisher<Task<GetAllReaderResponse>, ReaderInfo> msgPublisher)
         {
-            var resp = await msgPublisher.SendGetAllMessage(new ReaderModel());
+            var resp = await msgPublisher.SendGetAllMessage(new ReaderInfo());
 
             if (resp is null)
             {
@@ -72,9 +72,9 @@ namespace RabbitClient.Controllers
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(
-            [FromServices] IUpdateMessagePublisher<Guid, ReaderModel, Task<UpdateReaderResponse>> msgPublisher,
+            [FromServices] IUpdateMessagePublisher<Guid, ReaderInfo, Task<UpdateReaderResponse>> msgPublisher,
             [FromRoute] Guid id,
-            [FromBody] ReaderModel request)
+            [FromBody] ReaderInfo request)
         {
             var resp = await msgPublisher.SendUpdateMessage(id, request);
 

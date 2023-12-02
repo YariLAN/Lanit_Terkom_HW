@@ -4,10 +4,10 @@ using Models;
 namespace Commands.Commands.Book
 {
     public interface IBookCommand :
-        ICreateCommand<BookModel, Guid>,
-        IUpdateCommand<BookModel, Guid>,
-        IGetAllCommand<BookModel>,
-        IGetByIdCommand<Guid, BookModel>,
+        ICreateCommand<BookInfo, Guid>,
+        IUpdateCommand<BookInfo, Guid>,
+        IGetAllCommand<BookInfo>,
+        IGetByIdCommand<Guid, BookInfo>,
         IDeleteCommand<Guid>
     {
 

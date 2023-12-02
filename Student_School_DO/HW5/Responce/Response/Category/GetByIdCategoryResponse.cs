@@ -2,6 +2,6 @@
 {
     public class GetByIdCategoryResponse
     {
-        public CategoryModel Category { get; set; }
+        public CategoryInfo Category { get; set; }
     }
 }

@@ -2,6 +2,6 @@
 {
     public class UpdateReaderRequest
     {
-        public ReaderModel Reader { get; set; }
+        public ReaderInfo Reader { get; set; }
     }
 }

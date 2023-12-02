@@ -19,7 +19,7 @@ namespace RabbitClient.Publishers.Readers
         {
             GetByIdReaderRequest request = new() { Id = id };
 
-            Response<GetByIdReaderResponse> result =
+            MassTransit.Response<GetByIdReaderResponse> result =
                 await _requestClient.GetResponse<GetByIdReaderResponse>(request);
 
             return result.Message;

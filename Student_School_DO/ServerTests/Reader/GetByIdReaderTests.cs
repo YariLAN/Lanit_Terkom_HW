@@ -38,8 +38,8 @@ namespace ServerTests.Reader
 
             _mapper = new Mock<IMapper>();
 
-            _mapper.Setup(x => x.Map<ReaderModel>(reader))
-                    .Returns(new ReaderModel() { ReaderId = _guid });
+            _mapper.Setup(x => x.Map<ReaderInfo>(reader))
+                    .Returns(new ReaderInfo() { ReaderId = _guid });
 
             _validator = new Mock<ICreateReaderModelValidator>();
         }

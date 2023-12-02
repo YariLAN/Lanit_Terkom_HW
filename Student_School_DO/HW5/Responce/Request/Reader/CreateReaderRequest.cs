@@ -2,6 +2,6 @@
 {
     public class CreateReaderRequest
     {
-        public ReaderModel Reader { get; set; }
+        public ReaderInfo Reader { get; set; }
     }
 }

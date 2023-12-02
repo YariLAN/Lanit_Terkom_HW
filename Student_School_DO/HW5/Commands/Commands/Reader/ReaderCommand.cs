@@ -23,7 +23,7 @@ namespace Commands.Commands.Reader
             _validate = validate;
         }
 
-        public Responce<Guid> Create(ReaderModel entity)
+        public Response<Guid> Create(ReaderInfo entity)
         {
             ValidationResult validation = _validate.Validate(entity);
             if (!validation.IsValid)
@@ -47,7 +47,7 @@ namespace Commands.Commands.Reader
             };
         }
 
-        public Responce<Guid> Delete(Guid id)
+        public Response<Guid> Delete(Guid id)
         {
             _rep.DeleteById(id);
 
@@ -58,21 +58,21 @@ namespace Commands.Commands.Reader
             };
         }
 
-        public Responce<IEnumerable<ReaderModel>> GetAll()
+        public Response<IEnumerable<ReaderInfo>> GetAll()
         {
             var dbReaders = _rep.GetAll();
 
             return new()
             {
-                Value = _mapper.Map<IEnumerable<ReaderModel>>(dbReaders),
+                Value = _mapper.Map<IEnumerable<ReaderInfo>>(dbReaders),
             };
         }
 
-        public Responce<ReaderModel> GetById(Guid id)
+        public Response<ReaderInfo> GetById(Guid id)
         {
             var dbReader = _rep.GetById(id);
 
-            var map = _mapper.Map<ReaderModel>(dbReader);
+            var map = _mapper.Map<ReaderInfo>(dbReader);
 
             return new()
             {
@@ -80,7 +80,7 @@ namespace Commands.Commands.Reader
             };
         }
 
-        public Responce<Guid> Update(Guid id, ReaderModel entity)
+        public Response<Guid> Update(Guid id, ReaderInfo entity)
         {
             ValidationResult validation = _validate.Validate(entity);
             if (!validation.IsValid)

@@ -7,18 +7,18 @@ using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Publishers.Readers
 {
-    public class GetAllReaderPublisher : IGetAllMessagePublisher<Task<GetAllReaderResponse>, ReaderModel>
+    public class GetAllReaderPublisher : IGetAllMessagePublisher<Task<GetAllReaderResponse>, ReaderInfo>
     {
-        private readonly IRequestClient<ReaderModel> _requestClient;
+        private readonly IRequestClient<ReaderInfo> _requestClient;
 
-        public GetAllReaderPublisher(IRequestClient<ReaderModel> requestClient)
+        public GetAllReaderPublisher(IRequestClient<ReaderInfo> requestClient)
         {
             _requestClient = requestClient;
         }
 
-        public async Task<GetAllReaderResponse> SendGetAllMessage(ReaderModel request)
+        public async Task<GetAllReaderResponse> SendGetAllMessage(ReaderInfo request)
         {
-            Response<GetAllReaderResponse> result =
+            MassTransit.Response<GetAllReaderResponse> result =
                 await _requestClient.GetResponse<GetAllReaderResponse>(request);
 
             return result.Message;

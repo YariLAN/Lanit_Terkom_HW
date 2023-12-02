@@ -17,7 +17,7 @@ namespace RabbitClient.Controllers
         [HttpPost]
         public async Task<IActionResult> Post(
             [FromServices] ICreateMessagePublisher<CreateCategoryRequest, Task<CreateCategoryResponse>> msgPublisher,
-            [FromBody] CategoryModel request)
+            [FromBody] CategoryInfo request)
         {
             var resp = await msgPublisher.SendCreateMessage(new CreateCategoryRequest { Category = request });
 
@@ -31,9 +31,9 @@ namespace RabbitClient.Controllers
 
         [HttpGet]
         public async Task<IActionResult> GetAll(
-            [FromServices] IGetAllMessagePublisher<Task<GetAllCategoryResponse>, CategoryModel> msgPublisher)
+            [FromServices] IGetAllMessagePublisher<Task<GetAllCategoryResponse>, CategoryInfo> msgPublisher)
         {
-            var resp = await msgPublisher.SendGetAllMessage(new CategoryModel());
+            var resp = await msgPublisher.SendGetAllMessage(new CategoryInfo());
 
             if (resp is null)
             {
@@ -75,9 +75,9 @@ namespace RabbitClient.Controllers
 
         [HttpPut("{id}")]
         public async Task<IActionResult> Update(
-            [FromServices] IUpdateMessagePublisher<int, CategoryModel, Task<UpdateCategoryResponse>> msgPublisher,
+            [FromServices] IUpdateMessagePublisher<int, CategoryInfo, Task<UpdateCategoryResponse>> msgPublisher,
             [FromRoute] int id,
-            [FromBody] CategoryModel request)
+            [FromBody] CategoryInfo request)
         {
             var resp = await msgPublisher.SendUpdateMessage(id, request);
 

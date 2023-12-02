@@ -18,7 +18,7 @@ namespace RabbitServer.Consumers.Book
 
         public async Task Consume(ConsumeContext<DeleteBookRequest> context)
         {
-            Responce<Guid> result = _command.Delete(context.Message.Id);
+            Models.Response<Guid> result = _command.Delete(context.Message.Id);
 
             DeleteBookResponse responce = new DeleteBookResponse
             {

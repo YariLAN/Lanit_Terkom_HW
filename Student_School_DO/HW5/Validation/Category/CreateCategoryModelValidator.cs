@@ -5,7 +5,7 @@ using Validation.Category.Interfaces;
 namespace Validation.Category
 {
     public class CreateCategoryModelValidator :
-        AbstractValidator<CategoryModel>,
+        AbstractValidator<CategoryInfo>,
         ICreateCategoryModelValidator
     {
         public CreateCategoryModelValidator()

@@ -7,18 +7,18 @@ using RabbitClient.Publishers.Interfaces;
 
 namespace RabbitClient.Publishers.Categories
 {
-    public class GetAllCategoryPublisher : IGetAllMessagePublisher<Task<GetAllCategoryResponse>, CategoryModel>
+    public class GetAllCategoryPublisher : IGetAllMessagePublisher<Task<GetAllCategoryResponse>, CategoryInfo>
     {
-        private readonly IRequestClient<CategoryModel> _requestClient;
+        private readonly IRequestClient<CategoryInfo> _requestClient;
 
-        public GetAllCategoryPublisher([FromServices] IRequestClient<CategoryModel> requestClient)
+        public GetAllCategoryPublisher([FromServices] IRequestClient<CategoryInfo> requestClient)
         {
             _requestClient = requestClient;
         }
 
-        public async Task<GetAllCategoryResponse> SendGetAllMessage(CategoryModel request)
+        public async Task<GetAllCategoryResponse> SendGetAllMessage(CategoryInfo request)
         {
-            Response<GetAllCategoryResponse> result =
+            MassTransit.Response<GetAllCategoryResponse> result =
                 await _requestClient.GetResponse<GetAllCategoryResponse>(request);
 
             return result.Message;

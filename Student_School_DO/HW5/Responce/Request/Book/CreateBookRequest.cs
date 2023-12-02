@@ -2,6 +2,6 @@
 {
     public class CreateBookRequest
     {
-        public BookModel Book { get; set; }
+        public BookInfo Book { get; set; }
     }
 }

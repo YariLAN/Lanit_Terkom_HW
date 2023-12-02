@@ -5,7 +5,7 @@ using Validation.Genre.Interfaces;
 namespace Validation.Genre
 {
     public class CreateGenreModelValidator :
-        AbstractValidator<GenreModel>,
+        AbstractValidator<GenreInfo>,
         ICreateGenreModelValidator
     {
         public CreateGenreModelValidator()

@@ -2,6 +2,6 @@
 {
     public class GetAllCategoryResponse
     {
-        public IEnumerable<CategoryModel> Categories { get; set; }
+        public IEnumerable<CategoryInfo> Categories { get; set; }
     }
 }

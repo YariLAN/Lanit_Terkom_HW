@@ -1,6 +1,6 @@
 ﻿namespace Models
 {
-    public class BookModel
+    public class BookInfo
     {
         public Guid BookId { get; set; }
 
@@ -16,8 +16,8 @@
 
         public int CountBook { get; set; }
 
-        public GenreModel? Genre { get; set; }
+        public GenreInfo? Genre { get; set; }
 
-        public ICollection<IssuedModel>? Issueds { get; set; } = new List<IssuedModel>();
+        public ICollection<IssuedInfo>? Issueds { get; set; } = new List<IssuedInfo>();
     }
 }

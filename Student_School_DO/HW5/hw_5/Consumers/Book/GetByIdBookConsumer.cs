@@ -17,7 +17,7 @@ namespace RabbitServer.Consumers.Book
 
         public async Task Consume(ConsumeContext<GetByIdBookRequest> context)
         {
-            Responce<BookModel> book = _command.GetById(context.Message.Id);
+            Models.Response<BookInfo> book = _command.GetById(context.Message.Id);
 
             GetByIdBookResponse responce = new GetByIdBookResponse { Book = book.Value };
 

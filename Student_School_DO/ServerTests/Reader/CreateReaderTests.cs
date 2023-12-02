@@ -26,7 +26,7 @@ namespace ServerTests.Reader
 
             _mapper = new Mock<IMapper>();
 
-            _mapper.Setup(x => x.Map<EntitiesEF.Reader>(It.IsAny<ReaderModel>()))
+            _mapper.Setup(x => x.Map<EntitiesEF.Reader>(It.IsAny<ReaderInfo>()))
                    .Returns(anc);
 
             _rep = new Mock<IBaseRepository<EntitiesEF.Reader, Guid>>();
@@ -36,14 +36,14 @@ namespace ServerTests.Reader
             _validator = new Mock<ICreateReaderModelValidator>();
 
             _validator
-                .Setup(x => x.Validate(It.Is<ReaderModel>(x => x.FirstName != null)))
+                .Setup(x => x.Validate(It.Is<ReaderInfo>(x => x.FirstName != null)))
                 .Returns(new ValidationResult()
                 {
                     Errors = new List<ValidationFailure>()
                 });
 
             _validator
-                .Setup(x => x.Validate(It.Is<ReaderModel>(x => x.FirstName == null)))
+                .Setup(x => x.Validate(It.Is<ReaderInfo>(x => x.FirstName == null)))
                 .Returns(new ValidationResult()
                 {
                     Errors = new List<ValidationFailure>
@@ -65,7 +65,7 @@ namespace ServerTests.Reader
         [Test]
         public void CreateReaderTestIsOk()
         {
-            var ok = _readerCommand.Create(new ReaderModel()
+            var ok = _readerCommand.Create(new ReaderInfo()
             {
                 FirstName = "Yarik"
             });
@@ -76,7 +76,7 @@ namespace ServerTests.Reader
         [Test]
         public void CreateReaderTestIsNotOkByEmptyFirstName()
         {
-            var ok = _readerCommand.Create(new ReaderModel()
+            var ok = _readerCommand.Create(new ReaderInfo()
             {
                 FirstName = null
             });

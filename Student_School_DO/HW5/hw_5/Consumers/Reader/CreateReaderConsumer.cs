@@ -18,7 +18,7 @@ namespace RabbitServer.Consumers.Reader
 
         public async Task Consume(ConsumeContext<CreateReaderRequest> context)
         {
-            Responce<Guid> result = _command.Create(context.Message.Reader);
+            Models.Response<Guid> result = _command.Create(context.Message.Reader);
 
             CreateReaderResponse responce = new()
             {

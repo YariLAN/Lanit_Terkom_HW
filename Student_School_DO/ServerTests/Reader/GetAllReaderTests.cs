@@ -21,7 +21,7 @@ namespace ServerTests.Reader
         {
             _mapper = new Mock<IMapper>();
 
-            _mapper.Setup(x => x.Map<IEnumerable<ReaderModel>>(It.IsAny<IEnumerable<EntitiesEF.Reader>>()))
+            _mapper.Setup(x => x.Map<IEnumerable<ReaderInfo>>(It.IsAny<IEnumerable<EntitiesEF.Reader>>()))
                    .Returns(GetReaderModels());
 
             _rep = new Mock<IBaseRepository<EntitiesEF.Reader, Guid>>();
@@ -62,15 +62,15 @@ namespace ServerTests.Reader
             };
         }
 
-        private List<ReaderModel> GetReaderModels()
+        private List<ReaderInfo> GetReaderModels()
         {
-            return new List<ReaderModel>
+            return new List<ReaderInfo>
             {
-                new ReaderModel(),
-                new ReaderModel(),
-                new ReaderModel(),
-                new ReaderModel(),
-                new ReaderModel()
+                new ReaderInfo(),
+                new ReaderInfo(),
+                new ReaderInfo(),
+                new ReaderInfo(),
+                new ReaderInfo()
             };
         }
     }

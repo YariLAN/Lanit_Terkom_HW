@@ -1,6 +1,6 @@
 ﻿namespace Models
 {
-    public class ReaderModel
+    public class ReaderInfo
     {
         public Guid ReaderId { get; set; }
 
@@ -16,8 +16,8 @@
 
         public string Email { get; set; }
 
-        public CategoryModel? Category { get; set; }
+        public CategoryInfo? Category { get; set; }
 
-        public ICollection<IssuedModel>? Issueds { get; set; } = new List<IssuedModel>();
+        public ICollection<IssuedInfo>? Issueds { get; set; } = new List<IssuedInfo>();
     }
 }

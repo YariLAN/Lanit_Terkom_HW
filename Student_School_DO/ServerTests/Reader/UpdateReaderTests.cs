@@ -31,7 +31,7 @@ namespace ServerTests.Reader
 
             _mapper = new Mock<IMapper>();
 
-            _mapper.Setup(x => x.Map<EntitiesEF.Reader>(It.IsAny<ReaderModel>()))
+            _mapper.Setup(x => x.Map<EntitiesEF.Reader>(It.IsAny<ReaderInfo>()))
                    .Returns(anc);
 
             _rep = new Mock<IBaseRepository<EntitiesEF.Reader, Guid>>();
@@ -41,7 +41,7 @@ namespace ServerTests.Reader
             _validator = new Mock<ICreateReaderModelValidator>();
 
             _validator
-                .Setup(x => x.Validate(It.IsAny<ReaderModel>()))
+                .Setup(x => x.Validate(It.IsAny<ReaderInfo>()))
                 .Returns(new ValidationResult()
                 {
                     Errors = new List<ValidationFailure>()
@@ -57,7 +57,7 @@ namespace ServerTests.Reader
         [Test]
         public void UpdateReaderTestIsOk()
         {
-            var ok = _readerCommand.Update(_guid, new ReaderModel()
+            var ok = _readerCommand.Update(_guid, new ReaderInfo()
             {
                 LastName = "Matveev",
             });
