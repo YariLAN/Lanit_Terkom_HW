@@ -10,4 +10,8 @@
     <ProjectReference Include="..\..\HW4\EntitiesEF\EntitiesEF.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Response\Genre\" />
+  </ItemGroup>
+
 </Project>
